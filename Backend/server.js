@@ -6,21 +6,19 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const cloudinary = require('cloudinary');
 
-const connectDB = require('../Backend/Database/db.js');
+const connectDB = require('./Database/db.js');
 
-const UserRoutes = require('../Backend/routes/UserRouter.js');
-const SongRoutes = require('../Backend/routes/SongRoutes.js');
-const PaymentRoutes = require('../Backend/routes/PaymentRoutes.js');
-const AuthRoutes = require('../Backend/routes/AuthRoutes.js');
-const AdminRoutes = require('../Backend/routes/AdminDashboardRoutes.js');
-const incrementPlayCount = require('../Backend/routes/AdminDashboardRoutes.js')
-const DeleteUser = require('../Backend/routes/UserRouter.js');
-const AddNewSong = require('../Backend/routes/SongRoutes.js');
-const likeRoutes = require('../Backend/routes/likeRoutes.js');
+const UserRoutes = require('./routes/UserRouter.js');
+const SongRoutes = require('./routes/SongRoutes.js');
+const PaymentRoutes = require('./routes/PaymentRoutes.js');
+const AuthRoutes = require('./routes/AuthRoutes.js');
+const AdminRoutes = require('./routes/AdminDashboardRoutes.js');
+const likeRoutes = require('./routes/likeRoutes.js');
+
 const passport = require("passport");
 require("./config/passport");
-const { stripeWebhook } = require('../Backend/Controller/PaymentController');
 
+const { stripeWebhook } = require('./Controller/PaymentController');
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -29,7 +27,7 @@ cloudinary.v2.config({
 });
 
 const server = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 server.use(cors({
     origin: ["http://localhost:5173", "https://music-app123.vercel.app"],
@@ -44,15 +42,13 @@ server.post(
 
 server.use(express.json());
 server.use(cookieParser());
-
-
 server.use(passport.initialize());
 
-server.use("/api/user", UserRoutes ,DeleteUser , likeRoutes );
-server.use("/api/songs", SongRoutes , incrementPlayCount , AddNewSong );
+server.use("/api/user", UserRoutes, likeRoutes);
+server.use("/api/songs", SongRoutes);
 server.use("/api/payment", PaymentRoutes);
 server.use("/api/auth", AuthRoutes);
-server.use("/api/admin" ,AdminRoutes   );
+server.use("/api/admin", AdminRoutes);
 
 connectDB();
 
