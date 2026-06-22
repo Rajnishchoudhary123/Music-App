@@ -141,7 +141,7 @@ const Navbar = () => {
         {navItem("/playlist", "Playlist")}
         {navItem("/albums", "Albums")}
         {navItem("/recently-played", "Recently Played")}
-
+        {navItem("/liked", "Liked Songs")}
       </div>
 
     </div>
