@@ -34,6 +34,12 @@ isPremium: {
 stripeCustomerId: {
     type: String
 },
+likedSongs: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Song",
+  },
+],
 
 stripeSubscriptionId: {
     type: String

@@ -15,7 +15,8 @@ const AuthRoutes = require('../Backend/routes/AuthRoutes.js');
 const AdminRoutes = require('../Backend/routes/AdminDashboardRoutes.js');
 const incrementPlayCount = require('../Backend/routes/AdminDashboardRoutes.js')
 const DeleteUser = require('../Backend/routes/UserRouter.js');
-const AddNewSong = require('../Backend/routes/SongRoutes.js')
+const AddNewSong = require('../Backend/routes/SongRoutes.js');
+const likeRoutes = require('../Backend/routes/likeRoutes.js');
 const passport = require("passport");
 require("./config/passport");
 const { stripeWebhook } = require('../Backend/Controller/PaymentController');
@@ -47,7 +48,7 @@ server.use(cookieParser());
 
 server.use(passport.initialize());
 
-server.use("/api/user", UserRoutes ,DeleteUser  );
+server.use("/api/user", UserRoutes ,DeleteUser , likeRoutes );
 server.use("/api/songs", SongRoutes , incrementPlayCount , AddNewSong );
 server.use("/api/payment", PaymentRoutes);
 server.use("/api/auth", AuthRoutes);

@@ -148,6 +148,20 @@ export const UserProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+  async function toggleLikeSong(id) {
+  try {
+    const { data } = await axios.post("/api/user/like/" + id);
+    toast.success(data.message);
+    fetchUser(); 
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getLikedSongs() {
+  const { data } = await axios.get("/api/user/liked");
+  return data;
+}
 
 
 
@@ -164,7 +178,9 @@ export const UserProvider = ({ children }) => {
         loading ,
         fetchUsers ,
         deleteUser,
-        users
+        users ,
+        toggleLikeSong,
+        getLikedSongs
       }}
     >
       {children}

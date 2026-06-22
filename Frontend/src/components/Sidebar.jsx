@@ -87,7 +87,6 @@ const Sidebar = () => {
        
         <div className="p-3 flex-1 overflow-y-auto">
 
-  {/* ❤️ Liked Songs (INSIDE LIBRARY) */}
   <div
     onClick={() => navigate("/liked")}
     className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 cursor-pointer transition mb-2"
