@@ -85,6 +85,7 @@ exports.addSong = TryCatch(async (req, res) => {
     singer,
     premium ,
     category,
+     owner: req.user._id, 
     album : album || null ,
     audio: {
       id: audioCloud.public_id,

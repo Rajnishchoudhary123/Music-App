@@ -87,26 +87,61 @@ const Sidebar = () => {
        
         <div className="p-3 flex-1 overflow-y-auto">
 
-          <div
-            onClick={() => navigate("/playlist")}
-            className="hover:scale-[1.02] transition"
-          >
-            <PlayListCard collapsed={collapsed} />
-          </div>
+  {/* ❤️ Liked Songs (INSIDE LIBRARY) */}
+  <div
+    onClick={() => navigate("/liked")}
+    className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 cursor-pointer transition mb-2"
+  >
+    <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-red-500 rounded-md flex items-center justify-center">
+      ❤️
+    </div>
 
-          
-          {user?.role === "admin" && (
-            <button
-              onClick={() => navigate("/admin")}
-              className={`mt-4 w-full py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-black font-semibold hover:scale-[1.03] transition ${
-                collapsed ? "text-xs px-1" : ""
-              }`}
-            >
-              {collapsed ? "A" : "Admin Dashboard"}
-            </button>
-          )}
+    {!collapsed && (
+      <div>
+        <p className="text-sm font-semibold">Liked Songs</p>
+        <p className="text-xs text-gray-400">Your favorites</p>
+      </div>
+    )}
+  </div>
 
-        </div>
+  {/* ⏱ Recently Played */}
+  <div
+    onClick={() => navigate("/recently-played")}
+    className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 cursor-pointer transition mb-3"
+  >
+    <div className="w-10 h-10 bg-blue-500 rounded-md flex items-center justify-center">
+      ⏱
+    </div>
+
+    {!collapsed && (
+      <div>
+        <p className="text-sm font-semibold" >Recently Played</p>
+        <p className="text-xs text-gray-400">Your history</p>
+      </div>
+    )}
+  </div>
+
+  {/* 📁 YOUR PLAYLISTS SECTION */}
+  <div
+    onClick={() => navigate("/playlist")}
+    className="hover:scale-[1.02] transition mb-3"
+  >
+    <PlayListCard collapsed={collapsed} />
+  </div>
+
+  {/* 👑 ADMIN BUTTON (still inside library) */}
+  {user?.role === "admin" && (
+    <button
+      onClick={() => navigate("/admin")}
+      className={`mt-4 w-full py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-black font-semibold hover:scale-[1.03] transition ${
+        collapsed ? "text-xs px-1" : ""
+      }`}
+    >
+      {collapsed ? "A" : "Admin Dashboard"}
+    </button>
+  )}
+
+</div>
       </div>
     </div>
   );

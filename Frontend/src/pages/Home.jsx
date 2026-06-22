@@ -104,12 +104,12 @@ const Home = () => {
                 </h2>
               </div>
 
-              <button className="text-sm text-gray-400 hover:text-white transition">
+              <button className="text-sm text-gray-400 hover:text-white transition" onClick={() => navigate("/songs")}>
                 View All →
               </button>
             </div>
 
-            {/* CARDS ROW */}
+            
             <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide">
 
               {section.songs.length > 0 ? (

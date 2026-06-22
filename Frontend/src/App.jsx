@@ -21,6 +21,7 @@ import AlbumPage from "./pages/AlbumPage";
 import Albums from "./components/Album";
 import RecentlyPlayed from "./pages/RecentlyPlayed";
 import Player from "./components/Player";
+import AllSongs from "./pages/AllSongs";
 
 function AppRoutes({ isAuth, user }) {
   const location = useLocation();
@@ -47,6 +48,7 @@ function AppRoutes({ isAuth, user }) {
         <Route path="/album/:id" element={<AlbumPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/recently-played" element={<RecentlyPlayed />} />
+        <Route path="/songs" element={<AllSongs/>} />
       </Routes>
 
       {!shouldHidePlayer && isAuth && <Player />}
