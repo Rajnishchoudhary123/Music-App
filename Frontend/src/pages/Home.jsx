@@ -137,8 +137,8 @@ const Home = () => {
           </div>
         ))}
       </div>
-      <Player/>
-      <FullScreenPlayer/>
+      
+
     </Layout>
   );
 };
