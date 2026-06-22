@@ -1,0 +1,166 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 90deg;
+  inherits: false;
+}
+
+body{
+
+    font-family:  "poppins" , sans-serif;
+
+}
+*::-webkit-scrollbar{
+
+    height: 0.5rem;
+    width: 0.1rm;
+}
+
+*::-webkit-scrollbar-track{
+
+background-color: transparent;
+
+}
+
+*::-webkit-scrollbar-thumb{
+
+
+    background-color: #2e2b2e;
+}
+
+
+.group {
+  position: relative;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+.group span {
+  z-index: 50;
+}
+.group::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(rgb(168, 239, 255, 1) 20deg, transparent 120deg);
+  border-radius: 0.25rem;
+  animation: rotate-border 4s linear infinite;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.group::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #1a1a1a;
+  border-radius: 0.25rem;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.group > * {
+  position: relative;
+  z-index: 2;
+}
+
+.group:hover::before {
+    opacity: 1;
+    width: 510px;
+    height: 272px;
+    left: -90px;
+}
+.xyz:hover {
+    border: 10px solid white;
+    gap: 10px;  
+    
+}
+/* .animated-border {
+  position: relative;
+  background: #1f2937;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  z-index: 0
+} */
+
+@keyframes rotate-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  margin: 1rem;
+  font-family: sans-serif;
+}
+
+
+.premuim-tag {
+    position: absolute!important;
+    color: black;
+    top: 9px;
+    right: 9px;
+    background: orange;
+    padding: 5px;
+    border-radius: 5px;
+}
+.box.linear {
+  position: relative;
+  overflow: hidden;
+}
+
+.box.linear::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background-image: conic-gradient(rgb(168, 239, 255, 1) 20deg, transparent 120deg);
+  border-radius: 5px;
+  animation: rotate 4s linear infinite;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.box.linear::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: #000;
+  border-radius: 5px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.box.linear > * {
+  position: relative;
+  z-index: 2;
+}
+
+.animated-border {
+  position: relative;
+  background: #1f2937;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.animated-border > * {
+  position: relative;
+  z-index: 2;
+}
+
+.animated-border img {
+  position: relative;
+  z-index: 1
+}
