@@ -16,8 +16,7 @@ createRoot(document.getElementById('root')).render(
   <SongProvider>
 
    <App />
-<Player/>
-<FullScreenPlayer/>
+
   </SongProvider>
 
  

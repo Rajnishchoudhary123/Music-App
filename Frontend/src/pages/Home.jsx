@@ -4,6 +4,8 @@ import SongItem from "../components/SongItem";
 import { SongData } from "../Context/song";
 import { FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Player from "../components/Player";
+import FullScreenPlayer from "../components/FullScreenPlayer";
 
 const Home = () => {
   const { songs } = SongData();
@@ -135,6 +137,8 @@ const Home = () => {
           </div>
         ))}
       </div>
+      <Player/>
+      <FullScreenPlayer/>
     </Layout>
   );
 };

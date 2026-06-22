@@ -109,14 +109,14 @@ export const UserProvider = ({ children }) => {
 }
 
 
-  async function logoutUser() {
+  async function logoutUser(navigate) {
     try {
       await axios.get("/api/user/logout");
 
       setUser(null);
       setIsAuth(false);
 
-      window.location.href = "/login";
+      navigate("/login");
 
     } catch (error) {
       toast.error(
