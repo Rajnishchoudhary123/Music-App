@@ -11,7 +11,7 @@ const isPremium = (req, res, next) => {
     });
   }
 
-  next();
+  next(); 
 };
 
 module.exports = isPremium;

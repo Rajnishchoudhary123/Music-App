@@ -29,6 +29,7 @@ const [volume, setVolume] = useState(() => {
   return Number(localStorage.getItem("volume")) || 1;
 });
 
+const [showFullPlayer , setShowFullPlayer] = useState(false);
   const { user } = UserData();
 
   const premiumAlertShown = useRef(false);
@@ -304,6 +305,19 @@ async function addThumbnail(id, formData, setThumbnail) {
 
   }
 
+  const togglePlay = () => {
+  const audio = document.querySelector("audio");
+
+  if (!audio) return;
+
+  if (audio.paused) {
+    audio.play();
+    setIsPlaying(true);
+  } else {
+    audio.pause();
+    setIsPlaying(false);
+  }
+};
   return (
     <SongContext.Provider
       value={{
@@ -342,7 +356,10 @@ async function addThumbnail(id, formData, setThumbnail) {
         fetchDashboardStats ,
         fetchNewSongs ,
         volume ,
-        setVolume
+        setVolume ,
+        showFullPlayer ,
+        setShowFullPlayer ,
+        togglePlay,
       }}
     >
       {children}

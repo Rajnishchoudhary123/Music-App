@@ -1,21 +1,19 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const dotenv = require('dotenv')
+const genrateToken = (id, res) => {
+  const token = jwt.sign(
+    { id },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 
-dotenv.config()
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
 
-const genrateToken = (id , res)=>{
-
-    const token = jwt.sign({id} , process.env.JWT_SECRET , {expiresIn : "15d"});
-
-    res.cookie("token" , token, {
-        maxAge : 15 * 24 * 60 * 60 * 1000,
-        httpOnly: true ,
-
-        sameSite : "strict"
-    })
+  return token;
 };
-
-console.log(process.env.JWT_SECRET)
 
 module.exports = genrateToken;

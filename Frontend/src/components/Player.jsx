@@ -38,7 +38,8 @@ const Player = () => {
     shuffle,
     setShuffle,
     repeat,
-    setRepeat,
+    setRepeat, 
+    setShowFullPlayer
   } = SongData();
 
   const { user } = UserData();
@@ -143,6 +144,7 @@ const Player = () => {
   if (!song || !song.audio) return null;
 
   return (
+    <div   className="h-20 bg-black cursor-pointer" onClick={() => setShowFullPlayer(true)}>
     <div className="fixed bottom-0 left-0 w-full h-24 bg-black/70 backdrop-blur-xl border-t border-white/10 text-white px-4 flex items-center justify-between z-50">
 
     
@@ -244,6 +246,7 @@ const Player = () => {
         />
       </div>
 
+    </div>
     </div>
   );
 };

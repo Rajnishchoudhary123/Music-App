@@ -1,4 +1,4 @@
-# Logs
+git commit -m "first commit"# Logs
 logs
 *.log
 npm-debug.log*
