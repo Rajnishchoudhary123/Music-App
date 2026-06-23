@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://music-app-chqp.onrender.com",
+  baseURL:import.meta.env.VITE_SERVER, 
   withCredentials: true
 });
 

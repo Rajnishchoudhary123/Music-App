@@ -33,8 +33,11 @@ const server = express();
 const PORT = process.env.PORT || 5000;
 
 server.use(cors({
-    origin: ["http://localhost:5173", "https://music-frontend-git-main-rajnishs-projects-d3a1a552.vercel.app/"],
-    credentials: true
+  origin: [
+    "http://localhost:5173",
+    "https://music-frontend-git-main-rajnishs-projects-d3a1a552.vercel.app"
+  ],
+  credentials: true,
 }));
 
 server.post(
