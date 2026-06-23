@@ -12,7 +12,12 @@ exports.createAlbum = TryCatch(async (req, res) => {
   }
 
   const { title, description } = req.body;
-  const file = req.file;
+
+  // IMPORTANT: uploadFile middleware req.files use kar raha hai
+  const file = req.files?.file?.[0];
+
+  console.log("BODY:", req.body);
+  console.log("FILES:", req.files);
 
   if (!title || !description || !file) {
     return res.status(400).json({
@@ -22,9 +27,9 @@ exports.createAlbum = TryCatch(async (req, res) => {
 
   const fileUrl = getDatauri(file);
 
-  const cloud = await cloudinary.v2.uploader.upload(
-    fileUrl.content
-  );
+  const cloud = await cloudinary.v2.uploader.upload(fileUrl.content, {
+    folder: "albums",
+  });
 
   await Album.create({
     title,
@@ -35,7 +40,7 @@ exports.createAlbum = TryCatch(async (req, res) => {
     },
   });
 
-  res.json({
+  res.status(201).json({
     message: "Album added",
   });
 });

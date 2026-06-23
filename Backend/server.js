@@ -2,6 +2,9 @@ const express = require('express');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const dns = require("node:dns");
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const cloudinary = require('cloudinary');
@@ -30,7 +33,7 @@ const server = express();
 const PORT = process.env.PORT || 5000;
 
 server.use(cors({
-    origin: ["http://localhost:5173", "https://music-app123.vercel.app"],
+    origin: ["http://localhost:5173", "https://music-app-blue-eight.vercel.app/"],
     credentials: true
 }));
 

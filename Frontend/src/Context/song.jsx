@@ -201,24 +201,30 @@ async function addThumbnail(id, formData, setThumbnail) {
 }
 
   async function addAlbum(formData, reset) {
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const { data } = await axios.post(
-        "/api/songs/album/new",
-        formData
-      );
+  try {
+    const { data } = await axios.post(
+      "/api/songs/album/new",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
 
-      toast.success(data.message);
+    toast.success(data.message);
+    fetchAlbums();
 
-      fetchAlbums();
-      reset();
-    } catch (error) {
-      toast.error(error.response?.data?.message || "Error adding album");
-    } finally {
-      setLoading(false);
-    }
+    if (reset) reset();
+  } catch (error) {
+    console.log("Album add error:", error.response?.data);
+    toast.error(error.response?.data?.message || "Error adding album");
+  } finally {
+    setLoading(false);
   }
+}
 
  function nextSong() {
   if (!songs.length) return;

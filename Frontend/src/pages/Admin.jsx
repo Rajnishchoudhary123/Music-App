@@ -41,19 +41,28 @@ const Admin = () => {
     
   };
 
-  const addAlbumHandler = (e) => {
-    e.preventDefault();
+const addAlbumHandler = async (e) => {
+  e.preventDefault();
 
-    const formData = new FormData();
+  if (!albumTitle || !albumDescription || !albumFile) {
+    return alert("Please fill all album fields");
+  }
 
-    formData.append("title", albumTitle);
-    formData.append("description", albumDescription);
-    formData.append("file", albumFile);
+  const formData = new FormData();
+  formData.append("title", albumTitle);
+  formData.append("description", albumDescription);
+  formData.append("file", albumFile);
 
-    console.log("album file: " , albumFile )
+  console.log("Album title:", albumTitle);
+  console.log("Album description:", albumDescription);
+  console.log("Album file:", albumFile);
 
-    addAlbum(formData, setAlbumTitle, setAlbumDescription, setAlbumFile);
-  };
+  await addAlbum(formData, () => {
+    setAlbumTitle("");
+    setAlbumDescription("");
+    setAlbumFile(null);
+  });
+};
 
   const addSongHandler =  async (e) => {
     e.preventDefault();
