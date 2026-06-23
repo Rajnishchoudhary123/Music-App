@@ -43,6 +43,9 @@ server.post(
 server.use(express.json());
 server.use(cookieParser());
 server.use(passport.initialize());
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully");
+});
 
 server.use("/api/user", UserRoutes, likeRoutes);
 server.use("/api/songs", SongRoutes);

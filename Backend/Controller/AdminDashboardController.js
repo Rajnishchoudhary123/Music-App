@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const Song = require('../models/Song');
 const Album = require('../models/Album');
-const TryCatch = require('../utlis/tryCatch');
+const TryCatch = require('../utlis/TryCatch');
 
 exports.getDashboardState = TryCatch(async(req , res)=>{
 

@@ -13,7 +13,7 @@ const {
   getSingleSong,
   deleteAlbum,
   getNewSongs
-} = require("../Controller/songController");
+} = require("../Controller/SongController.js");
 
 const router = express.Router();
 

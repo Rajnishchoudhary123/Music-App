@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, myProfile, logoutUser, saveToPlayList, deleteUser, getAllUsers } = require('../controller/userController.js');
+const { registerUser, loginUser, myProfile, logoutUser, saveToPlayList, deleteUser, getAllUsers } = require('../Controllers/UserController.js');
 const isAuth = require('../middlewear/isAuth.js');
 const isAdmin = require('../middlewear/isAdmin.js')
 

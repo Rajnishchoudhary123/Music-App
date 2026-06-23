@@ -1,5 +1,5 @@
 
-const TryCatch = require('../utlis/tryCatch.js')
+const TryCatch = require('../utlis/TryCatch.js')
 
 const User = require('../models/user.js')
 
