@@ -1,6 +1,6 @@
 const Album = require("../models/Album");
 const Song = require("../models/Song");
-const TryCatch = require("../utlis/tryCatch");
+const TryCatch = require("../utlis/TryCatch");
 const getDatauri = require("../utlis/urlGenerater");
 const cloudinary = require("cloudinary");
 

@@ -5,7 +5,7 @@ dotenv.config()
 
 const User = require('../models/user')
 const Song = require('../models/Song');
-const TryCatch = require('../utlis/tryCatch');
+const TryCatch = require('../utlis/TryCatch');
 
 
 const stripe = new Stripe(
