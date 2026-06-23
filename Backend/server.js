@@ -43,6 +43,10 @@ server.post(
     stripeWebhook
 );
 
+server.get("/", (req, res) => {
+    res.send("Server is running");
+});
+
 server.use(express.json());
 server.use(cookieParser());
 server.use(passport.initialize());
