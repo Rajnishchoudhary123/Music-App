@@ -61,7 +61,7 @@ const [showFullPlayer , setShowFullPlayer] = useState(false);
   useEffect(() => {
     fetchSongs();
     fetchAlbums();
-    fetchNewSongs();
+    // fetchNewSongs();
   }, []);
   
   useEffect(() => {
@@ -159,22 +159,22 @@ async function fetchAlbums() {
   }
 }
 
-async function fetchNewSongs() {
-  try {
-    const { data } = await axios.get("/api/songs/latest");
+// async function fetchNewSongs() {
+//   try {
+//     const { data } = await axios.get("/api/songs/latest");
 
-    const newSongsArray = Array.isArray(data)
-      ? data
-      : Array.isArray(data?.songs)
-      ? data.songs
-      : [];
+//     const newSongsArray = Array.isArray(data)
+//       ? data
+//       : Array.isArray(data?.songs)
+//       ? data.songs
+//       : [];
 
-    setNewSongs(newSongsArray);
-  } catch (error) {
-    console.log(error);
-    setNewSongs([]);
-  }
-}
+//     setNewSongs(newSongsArray);
+//   } catch (error) {
+//     console.log(error);
+//     setNewSongs([]);
+//   }
+// }
 
 
   async function deleteSong(id) {
@@ -383,7 +383,7 @@ async function addThumbnail(id, formData, setThumbnail) {
         dashboardStats ,
          setDashboardStats ,
         fetchDashboardStats ,
-        fetchNewSongs ,
+        // fetchNewSongs ,
         volume ,
         setVolume ,
         showFullPlayer ,
