@@ -104,7 +104,7 @@ useEffect(() => {
 
 
   
- async function fetchAlbums() {
+async function fetchAlbums() {
   try {
     const { data } = await axios.get("/api/songs/album/all");
 

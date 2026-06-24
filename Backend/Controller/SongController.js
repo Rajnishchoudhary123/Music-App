@@ -125,10 +125,7 @@ exports.getNewSongs = async (req, res) => {
 
 exports.addThumbnail = TryCatch(async (req, res) => {
   const { id } = req.params;
-  const file = req.file;
-
-  console.log("PARAMS:", req.params);
-  console.log("FILE OK");
+  const file = req.files?.file?.[0] || req.file;
 
   if (!file) {
     return res.status(400).json({ message: "No file uploaded" });
@@ -139,7 +136,6 @@ exports.addThumbnail = TryCatch(async (req, res) => {
   if (!song) {
     return res.status(404).json({ message: "Song not found" });
   }
-
 
   const base64 = file.buffer.toString("base64");
   const dataUri = `data:${file.mimetype};base64,${base64}`;
@@ -224,12 +220,6 @@ exports.getSingleSong = TryCatch(async (req, res) => {
   if (!song) {
     return res.status(404).json({
       message: "Song not found",
-    });
-  }
-
-  if (song.premium && !req.user.isPremium) {
-    return res.status(403).json({
-      message: "Premium subscription required",
     });
   }
 
