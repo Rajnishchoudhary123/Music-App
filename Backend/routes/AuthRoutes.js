@@ -6,9 +6,11 @@ const router = express.Router();
 
 router.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    prompt: "select_account",
+  })
 );
-
 
 router.get(
   "/google/callback",
@@ -22,10 +24,12 @@ router.get(
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("http://localhost:5173");
+    res.redirect(process.env.FRONTEND_URL);
   }
 );
 

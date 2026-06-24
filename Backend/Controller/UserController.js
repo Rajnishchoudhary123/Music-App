@@ -92,18 +92,16 @@ res.json(user)
 
 });
 
-exports.logoutUser = TryCatch(async(req , res)=>{
+exports.logoutUser = TryCatch(async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
 
-res.cookie("token" , "", {
-    maxAge : 0
-})
-
-res.json({
-
-    message : "logged Out successfully"
-
-})
-
+  res.json({
+    message: "logged Out successfully",
+  });
 });
 
 exports.saveToPlayList = TryCatch(async (req, res) => {
