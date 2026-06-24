@@ -4,67 +4,54 @@ import SongItem from "../components/SongItem";
 import { SongData } from "../Context/song";
 import { FaLock } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Player from "../components/Player";
-import FullScreenPlayer from "../components/FullScreenPlayer";
 
 const Home = () => {
   const { songs } = SongData();
+  const safeSongs = Array.isArray(songs) ? songs : [];
 
   const navigate = useNavigate();
 
   const sections = [
     {
       title: "Today's Biggest Hits",
-      songs: songs.filter((s) => s.category === "today-biggest-hits"),
+      songs: safeSongs.filter((s) => s.category === "today-biggest-hits"),
     },
     {
       title: "New Releases",
-      songs: songs.filter((s) => s.category === "new-release"),
+      songs: safeSongs.filter((s) => s.category === "new-release"),
     },
     {
       title: "Premium Songs",
-      songs: songs.filter((s) => s.category === "premium-songs"),
+      songs: safeSongs.filter((s) => s.category === "premium-songs"),
       premium: true,
-    },let ge = e => !e?.premium || k?.isPremium
-      , _e = t?.filter(e => {
-        let t = e?.title?.toLowerCase() || ``
-          , n = e?.singer?.toLowerCase() || ``
-          , r = S.toLowerCase();
-        return t.includes(r) || n.includes(r)
-    }
+    },
     {
       title: "Sad Songs",
-      songs: songs.filter((s) => s.category === "sad-Songs"),
+      songs: safeSongs.filter((s) => s.category === "sad-Songs"),
     },
     {
       title: "Hindi Hits",
-      songs: songs.filter((s) => s.category === "hindi-hits"),
+      songs: safeSongs.filter((s) => s.category === "hindi-hits"),
     },
     {
       title: "2010s Classics",
-      songs: songs.filter((s) => s.category === "2010"),
+      songs: safeSongs.filter((s) => s.category === "2010"),
     },
     {
       title: "Hip-Hop",
-      songs: songs.filter((s) => s.category === "hip-hop"),
+      songs: safeSongs.filter((s) => s.category === "hip-hop"),
     },
   ];
 
   return (
     <Layout>
       <div className="p-5 md:p-8 text-white space-y-12">
-
-        {/* 🌈 HERO */}
+        {/* HERO */}
         <div className="relative overflow-hidden rounded-3xl shadow-2xl">
-
-          {/* animated glow */}
           <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-pink-600 to-indigo-700 animate-pulse opacity-80" />
-
-          {/* blur overlay */}
           <div className="absolute inset-0 bg-black/40 backdrop-blur-md" />
 
           <div className="relative z-10 p-8 md:p-14">
-
             <p className="uppercase tracking-[4px] text-xs text-white/60 mb-3">
               Music For Everyone
             </p>
@@ -79,26 +66,28 @@ const Home = () => {
             </p>
 
             <div className="mt-6 flex gap-3">
-              <button className="px-5 py-2 bg-white text-black rounded-full font-semibold hover:scale-105 transition" onClick={() => navigate("/premium")}>
+              <button
+                className="px-5 py-2 bg-white text-black rounded-full font-semibold hover:scale-105 transition"
+                onClick={() => navigate("/premium")}
+              >
                 Explore
               </button>
 
-              <button className="px-5 py-2 bg-white/10 border border-white/20 rounded-full hover:bg-white/20 transition" onClick={() => navigate("/premium")}>
+              <button
+                className="px-5 py-2 bg-white/10 border border-white/20 rounded-full hover:bg-white/20 transition"
+                onClick={() => navigate("/premium")}
+              >
                 Premium
               </button>
             </div>
           </div>
         </div>
 
-        {/* 🎵 SECTIONS */}
+        {/* SECTIONS */}
         {sections.map((section, i) => (
           <div key={i} className="space-y-4">
-
-            {/* HEADER */}
             <div className="flex items-center justify-between">
-
               <div className="flex items-center gap-3">
-
                 {section.premium && (
                   <div className="p-2 rounded-full bg-yellow-400/20 border border-yellow-400/30">
                     <FaLock className="text-yellow-400 text-sm" />
@@ -110,14 +99,15 @@ const Home = () => {
                 </h2>
               </div>
 
-              <button className="text-sm text-gray-400 hover:text-white transition" onClick={() => navigate("/songs")}>
+              <button
+                className="text-sm text-gray-400 hover:text-white transition"
+                onClick={() => navigate("/songs")}
+              >
                 View All →
               </button>
             </div>
 
-            
             <div className="flex gap-4 overflow-x-auto pb-3 scrollbar-hide">
-
               {section.songs.length > 0 ? (
                 section.songs.map((song) => (
                   <div
@@ -143,8 +133,6 @@ const Home = () => {
           </div>
         ))}
       </div>
-      
-
     </Layout>
   );
 };
