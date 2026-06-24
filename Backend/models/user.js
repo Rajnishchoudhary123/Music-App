@@ -1,64 +1,67 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-
-id : {
-
-    type : String
-
-},
-name: {
-    type: String,
-    required: true,
-    trim: true
-},
-
-email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true
-},
-
-password: {
-    type: String,
-    required: true
-},
-
-isPremium: {
-    type: Boolean,
-    default: false
-},
-
-stripeCustomerId: {
-    type: String
-},
-likedSongs: [
+const userSchema = new mongoose.Schema(
   {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Song",
-  },
-],
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
 
-stripeSubscriptionId: {
-    type: String
-},
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
 
-role: {
-    type: String,
-    enum: ["user", "admin"],
-    default: "user"
-},
+    password: {
+      type: String,
+      required: true,
+    },
 
-playlist: [
-    {
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+
+    premiumSince: {
+      type: Date,
+      default: null,
+    },
+
+    stripeCustomerId: {
+      type: String,
+      default: null,
+    },
+
+    stripeSubscriptionId: {
+      type: String,
+      default: null,
+    },
+
+    likedSongs: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Songs"
-    }
-]
+        ref: "Song",
+      },
+    ],
 
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
 
-}, { timestamps: true });
+    playlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Song",
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Musicuser", userSchema);

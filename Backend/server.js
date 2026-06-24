@@ -23,7 +23,7 @@ require("./config/passport");
 const { stripeWebhook } = require("./Controller/PaymentController");
 
 cloudinary.v2.config({
-  cloud_name: process.env.CLOUD_NAME,
+  cloud_name: process.env.CLOUD_NAME,   
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_SECRET_API,
 });
@@ -41,7 +41,7 @@ server.use(
   })
 );
 
-// Stripe webhook must be before express.json()
+
 server.post(
   "/api/payment/webhook",
   express.raw({ type: "application/json" }),

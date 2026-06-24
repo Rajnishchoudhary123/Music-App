@@ -146,6 +146,45 @@ export const UserProvider = ({ children }) => {
     });
     return data;
   }
+  async function buyPremium() {
+  try {
+    setButtonLoading(true);
+
+    const { data } = await axios.post(
+      "/api/payment/subscribe",
+      {},
+      { withCredentials: true }
+    );
+
+    if (data.url) {
+      window.location.href = data.url;
+    }
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Payment start nahi hua");
+  } finally {
+    setButtonLoading(false);
+  }
+}
+async function cancelPremium() {
+  try {
+    setButtonLoading(true);
+
+    const { data } = await axios.post(
+      "/api/payment/cancel-subscription",
+      {},
+      { withCredentials: true }
+    );
+
+    toast.success(data.message || "Subscription cancelled");
+    await fetchUser();
+  } catch (error) {
+    toast.error(
+      error?.response?.data?.message || "Subscription cancel nahi hua"
+    );
+  } finally {
+    setButtonLoading(false);
+  }
+}
 
   useEffect(() => {
     fetchUser();
@@ -167,7 +206,9 @@ export const UserProvider = ({ children }) => {
         users,
         toggleLikeSong,
         getLikedSongs,
-        fetchUser, // important
+        fetchUser, 
+        buyPremium ,
+        cancelPremium
       }}
     >
       {children}

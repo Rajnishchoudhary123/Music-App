@@ -10,7 +10,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const location = useLocation();
-  const { logoutUser, user } = UserData();
+  const { user, logoutUser, buyPremium, cancelPremium, buttonLoading } = UserData();
   const navigate = useNavigate();
 
   const isPremium = user?.isPremium === true;
@@ -76,27 +76,43 @@ const Navbar = () => {
           </button>
 
         
-          {!isPremium ? (
-            <button
-              onClick={() => navigate("/premium")}
-              className="hidden md:flex items-center gap-2 px-4 py-1 rounded-full bg-yellow-500 text-black text-sm font-medium hover:scale-105 transition"
-            >
-              <FaCrown />
-              Premium
-            </button>
-          ) : (
-            <div className="hidden md:flex items-center gap-2 px-4 py-1 rounded-full bg-green-500 text-white text-sm font-medium">
-              👑 Premium
-            </div>
-          )}
+{!isPremium ? (
+  <button
+    onClick={buyPremium}
+    disabled={buttonLoading}
+    className="hidden md:flex items-center gap-2 px-4 py-1 rounded-full bg-yellow-500 text-black text-sm font-medium hover:scale-105 transition disabled:opacity-60"
+  >
+    <FaCrown />
+    {buttonLoading ? "Loading..." : "Premium"}
+  </button>
+) : (
+  <div className="hidden md:flex items-center gap-2">
+    <div className="flex items-center gap-2 px-4 py-1 rounded-full bg-green-500 text-white text-sm font-medium">
+      👑 Premium
+    </div>
+
+    <button
+      onClick={async () => {
+        const ok = window.confirm("Are you sure you want to cancel premium subscription?");
+        if (ok) {
+          await cancelPremium();
+        }
+      }}
+      disabled={buttonLoading}
+      className="px-4 py-1 rounded-full bg-red-500 text-white text-sm font-medium hover:scale-105 transition disabled:opacity-60"
+    >
+      {buttonLoading ? "Cancelling..." : "Cancel"}
+    </button>
+  </div>
+)}
 
          
-          <button
-            onClick={logoutUser}
-            className="px-4 py-1 rounded-full bg-red-500 text-white text-sm hover:scale-105 transition"
-          >
-            Logout
-          </button>
+         <button
+  onClick={() => logoutUser(navigate)}
+  className="px-4 py-1 rounded-full bg-red-500 text-white text-sm hover:scale-105 transition"
+>
+  Logout
+</button>
 
           
           <div className="relative">
@@ -121,11 +137,11 @@ const Navbar = () => {
                   </button>
 
                   <button
-                    className="text-red-400 text-sm text-left hover:text-red-300"
-                    onClick={logoutUser}
-                  >
-                    Logout
-                  </button>
+  className="text-red-400 text-sm text-left hover:text-red-300"
+  onClick={() => logoutUser(navigate)}
+>
+  Logout
+</button>
                 </div>
               </div>
             )}
