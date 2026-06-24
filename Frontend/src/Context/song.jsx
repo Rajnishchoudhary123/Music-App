@@ -38,19 +38,25 @@ const [showFullPlayer , setShowFullPlayer] = useState(false);
 
 
   async function fetchSongs() {
-    try {
-      const { data } = await axios.get("/api/songs/all");
+  try {
+    const { data } = await axios.get("/api/songs/all");
+    const songsArray = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.songs)
+      ? data.songs
+      : [];
 
-      setSongs(data || []);
+    setSongs(songsArray);
 
-      if (data?.length > 0 && selectedSong === null) {
-  setSelectedSong(data[0]._id);
-  setIndex(0);
-}
-    } catch (error) {
-      console.log(error);
+    if (songsArray.length > 0 && selectedSong === null) {
+      setSelectedSong(songsArray[0]._id);
+      setIndex(0);
     }
+  } catch (error) {
+    console.log(error);
+    setSongs([]);
   }
+}
 
   useEffect(() => {
     fetchSongs();
@@ -98,14 +104,22 @@ useEffect(() => {
 
 
   
-  async function fetchAlbums() {
-    try {
-      const { data } = await axios.get("/api/songs/album/all");
-      setAlbums(data || []);
-    } catch (error) {
-      console.log(error);
-    }
+ async function fetchAlbums() {
+  try {
+    const { data } = await axios.get("/api/songs/album/all");
+
+    const albumsArray = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.albums)
+      ? data.albums
+      : [];
+
+    setAlbums(albumsArray);
+  } catch (error) {
+    console.log(error);
+    setAlbums([]);
   }
+}
 
  
   async function addSong(
@@ -147,10 +161,18 @@ useEffect(() => {
 
 async function fetchNewSongs() {
   try {
-    const { data } = await axios.get("/api/songs/new");
-    setNewSongs(data);
+    const { data } = await axios.get("/api/songs/latest");
+
+    const newSongsArray = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.songs)
+      ? data.songs
+      : [];
+
+    setNewSongs(newSongsArray);
   } catch (error) {
     console.log(error);
+    setNewSongs([]);
   }
 }
 
@@ -278,14 +300,15 @@ async function addThumbnail(id, formData, setThumbnail) {
  const canPlaySong = (song) => {
   return !song?.premium || user?.isPremium;
 };
-  const searchedSongs =
-    songs?.filter((song) => {
+ const searchedSongs = Array.isArray(songs)
+  ? songs.filter((song) => {
       const title = song?.title?.toLowerCase() || "";
       const singer = song?.singer?.toLowerCase() || "";
       const q = searchQuery.toLowerCase();
 
       return title.includes(q) || singer.includes(q);
-    }) || [];
+    })
+  : [];
 
     const playAlbum = (albumSongs, startIndex = 0) => {
   setQueue(albumSongs);

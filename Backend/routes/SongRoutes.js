@@ -12,21 +12,23 @@ const {
   deleteSong,
   getSingleSong,
   deleteAlbum,
-  getNewSongs
+  getNewSongs,
 } = require("../Controller/SongController.js");
 
 const router = express.Router();
 
 
-router.post("/album/new", uploadFile, isAuth, createAlbum);
-router.get("/album/all", isAuth, getAllAlbums);
-router.get("/album/:id", isAuth, getAllSongsByAlbum);
+router.get("/all", getAllSongs);
+router.get("/album/all", getAllAlbums);
+router.get("/latest", getNewSongs); // /new ki jagah latest use karo
+router.get("/single/:id", getSingleSong);
+router.get("/album/:id", getAllSongsByAlbum);
+
+
 router.post("/new", uploadFile, isAuth, addSong);
-router.get("/all", isAuth, getAllSongs);
-router.get("/single/:id", isAuth, getSingleSong);
-router.post("/thumbnail/:id",isAuth , uploadFile, addThumbnail);
+router.post("/thumbnail/:id", isAuth, uploadFile, addThumbnail);
+router.post("/album/new", uploadFile, isAuth, createAlbum);
 router.delete("/:id", isAuth, deleteSong);
 router.delete("/album/:id", isAuth, deleteAlbum);
-router.get("/new" , isAuth , getNewSongs)
 
 module.exports = router;
