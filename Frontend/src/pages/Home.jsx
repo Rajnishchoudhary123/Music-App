@@ -25,7 +25,13 @@ const Home = () => {
       title: "Premium Songs",
       songs: songs.filter((s) => s.category === "premium-songs"),
       premium: true,
-    },
+    },let ge = e => !e?.premium || k?.isPremium
+      , _e = t?.filter(e => {
+        let t = e?.title?.toLowerCase() || ``
+          , n = e?.singer?.toLowerCase() || ``
+          , r = S.toLowerCase();
+        return t.includes(r) || n.includes(r)
+    }
     {
       title: "Sad Songs",
       songs: songs.filter((s) => s.category === "sad-Songs"),
