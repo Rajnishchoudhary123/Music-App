@@ -33,7 +33,7 @@ const PORT = process.env.PORT || 5000;
 
 server.use(
    cors({
-    origin: [process.env.FRONTEND_URL, process.env.VITE_SERVER, "http://localhost:5173"],
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   })
 );
