@@ -6,7 +6,6 @@ const dns = require("node:dns");
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
 const cloudinary = require("cloudinary");
 const passport = require("passport");
 
@@ -19,11 +18,11 @@ const AuthRoutes = require("./routes/AuthRoutes.js");
 const AdminRoutes = require("./routes/AdminDashboardRoutes.js");
 const likeRoutes = require("./routes/likeRoutes.js");
 const paymentController = require("./Controller/PaymentController.js");
+
 require("./config/passport");
-const { stripeWebhook } = require("./Controller/PaymentController");
 
 cloudinary.v2.config({
-  cloud_name: process.env.CLOUD_NAME,   
+  cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_SECRET_API,
 });
@@ -31,18 +30,36 @@ cloudinary.v2.config({
 const server = express();
 const PORT = process.env.PORT || 5000;
 
-server.use(
-   cors({
-    origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
-    credentials: true,
-  })
-);
+server.set("trust proxy", 1);
 
+const allowedOrigins = [
+  "https://music-app-two-sigma.vercel.app",
+  "http://localhost:5173",
+];
+
+server.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 server.post(
   "/api/payment/webhook",
   express.raw({ type: "application/json" }),
-    paymentController.stripeWebhook
+  paymentController.stripeWebhook
 );
 
 server.get("/", (req, res) => {
