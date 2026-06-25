@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 exports.createSubscription = TryCatch(async (req, res) => {
   console.log("=== CREATE SUBSCRIPTION HIT ===");
   console.log("req.user =>", req.user);
-  console.log("CLIENT_URL =>", process.env.CLIENT_URL);
+  console.log("FRONTEND_URL =>", process.env.FRONTEND_URL);
   console.log("STRIPE_PRICE_ID =>", process.env.STRIPE_PRICE_ID);
   console.log("STRIPE_SECRET_KEY exists =>", !!process.env.STRIPE_SECRET_KEY);
 
@@ -36,10 +36,10 @@ exports.createSubscription = TryCatch(async (req, res) => {
     });
   }
 
-  if (!process.env.CLIENT_URL) {
+  if (!process.env.FRONTEND_URL) {
     return res.status(500).json({
       success: false,
-      message: "Missing CLIENT_URL in .env",
+      message: "Missing FRONTEND_URL in .env",
     });
   }
 
@@ -52,25 +52,39 @@ exports.createSubscription = TryCatch(async (req, res) => {
     });
   }
 
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    payment_method_types: ["card"],
-    customer_email: user.email,
-    line_items: [
-      {
-        price: process.env.STRIPE_PRICE_ID,
-        quantity: 1,
+  try {
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      payment_method_types: ["card"],
+      customer_email: user.email,
+      line_items: [
+        {
+          price: process.env.STRIPE_PRICE_ID,
+          quantity: 1,
+        },
+      ],
+      success_url: `${process.env.FRONTEND_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/payment-cancel`,
+      client_reference_id: user._id.toString(),
+      metadata: {
+        userId: user._id.toString(),
+        email: user.email,
       },
-    ],
-    success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${process.env.CLIENT_URL}/cancel`,
-    client_reference_id: user._id.toString(),
-  });
+    });
 
-  return res.status(200).json({
-    success: true,
-    url: session.url,
-  });
+    console.log("Stripe session created:", session.id);
+
+    return res.status(200).json({
+      success: true,
+      url: session.url,
+    });
+  } catch (error) {
+    console.log("STRIPE SESSION ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 exports.stripeWebhook = async (req, res) => {
@@ -93,7 +107,9 @@ exports.stripeWebhook = async (req, res) => {
   try {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      const userId = session.client_reference_id;
+
+      const userId =
+        session.client_reference_id || session.metadata?.userId;
 
       console.log("checkout.session.completed fired");
       console.log("userId:", userId);
