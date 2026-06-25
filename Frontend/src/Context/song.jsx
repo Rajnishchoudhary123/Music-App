@@ -1,4 +1,4 @@
-import { useState, useContext, createContext, useEffect } from "react";
+import { useState, useContext, createContext, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import axios from "./axios.js";
 import { UserData } from "./user";
@@ -37,18 +37,17 @@ export const SongProvider = ({ children }) => {
 
   const [showFullPlayer, setShowFullPlayer] = useState(false);
 
+
+  const audioRef = useRef(null);
+
   const { user } = UserData();
 
-  // -------------------------------
-  // Helpers
-  // -------------------------------
+
   const canPlaySong = (song) => {
     return !song?.premium || user?.isPremium;
   };
 
-  // -------------------------------
-  // Fetch all songs
-  // -------------------------------
+  
   async function fetchSongs() {
     try {
       const { data } = await axios.get("/api/songs/all", {
@@ -73,9 +72,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Fetch single selected song
-  // -------------------------------
+
   async function fetchSong() {
     try {
       if (!selectedSong) return;
@@ -97,9 +94,6 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Fetch albums
-  // -------------------------------
   async function fetchAlbums() {
     try {
       const { data } = await axios.get("/api/songs/album/all", {
@@ -119,9 +113,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Fetch premium songs
-  // -------------------------------
+
   async function fetchPremiumSongs() {
     try {
       const { data } = await axios.get("/api/payment/premium", {
@@ -136,9 +128,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Add song
-  // -------------------------------
+  
   async function addSong(
     formData,
     setSongTitle,
@@ -175,9 +165,6 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Delete song
-  // -------------------------------
   async function deleteSong(id) {
     try {
       const { data } = await axios.delete("/api/songs/" + id, {
@@ -191,9 +178,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Delete album
-  // -------------------------------
+
   async function deleteAlbum(id) {
     try {
       const { data } = await axios.delete("/api/songs/album/" + id, {
@@ -207,9 +192,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Add thumbnail
-  // -------------------------------
+
   async function addThumbnail(id, formData, setThumbnail) {
     setLoading(true);
 
@@ -233,9 +216,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Add album
-  // -------------------------------
+
   async function addAlbum(formData, reset) {
     setLoading(true);
 
@@ -259,9 +240,7 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Play specific song manually
-  // -------------------------------
+
   function playSong(songToPlay, songList = songs) {
     if (!songToPlay) return;
 
@@ -282,9 +261,7 @@ export const SongProvider = ({ children }) => {
     setIsPlaying(true);
   }
 
-  // -------------------------------
-  // Next song
-  // -------------------------------
+
   function nextSong() {
     if (!songs.length) return;
 
@@ -324,9 +301,7 @@ export const SongProvider = ({ children }) => {
     setIsPlaying(true);
   }
 
-  // -------------------------------
-  // Previous song
-  // -------------------------------
+ 
   function prevSong() {
     if (!songs.length) return;
 
@@ -366,9 +341,7 @@ export const SongProvider = ({ children }) => {
     setIsPlaying(true);
   }
 
-  // -------------------------------
-  // Play album
-  // -------------------------------
+  
   function playAlbum(albumSongs, startIndex = 0) {
     if (!albumSongs?.length) return;
 
@@ -389,9 +362,7 @@ export const SongProvider = ({ children }) => {
     setIsPlaying(true);
   }
 
-  // -------------------------------
-  // Search songs
-  // -------------------------------
+
   const searchedSongs = Array.isArray(songs)
     ? songs.filter((song) => {
         const title = song?.title?.toLowerCase() || "";
@@ -402,9 +373,7 @@ export const SongProvider = ({ children }) => {
       })
     : [];
 
-  // -------------------------------
-  // Dashboard stats
-  // -------------------------------
+  
   async function fetchDashboardStats() {
     try {
       const { data } = await axios.get("/api/admin/dashboard", {
@@ -417,58 +386,47 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  // -------------------------------
-  // Toggle play/pause
-  // -------------------------------
-  const togglePlay = () => {
-    const audio = document.querySelector("audio");
-    if (!audio) return;
+const togglePlay = async () => {
+  const audio = document.querySelector("audio");
+  if (!audio) return;
 
+  try {
     if (audio.paused) {
-      audio.play();
+      await audio.play();
       setIsPlaying(true);
     } else {
       audio.pause();
       setIsPlaying(false);
     }
-  };
+  } catch (error) {
+    console.log("togglePlay error:", error);
+  }
+};
 
-  // -------------------------------
-  // Initial load
-  // -------------------------------
+
   useEffect(() => {
     fetchSongs();
     fetchAlbums();
   }, []);
 
-  // -------------------------------
-  // Save selected song
-  // -------------------------------
+
   useEffect(() => {
     if (selectedSong) {
       localStorage.setItem("selectedSong", selectedSong);
     }
   }, [selectedSong]);
 
-  // -------------------------------
-  // Save playing state
-  // -------------------------------
+ 
   useEffect(() => {
     localStorage.setItem("isPlaying", isPlaying);
   }, [isPlaying]);
 
-  // -------------------------------
-  // Save volume
-  // -------------------------------
+
   useEffect(() => {
     localStorage.setItem("volume", volume);
   }, [volume]);
 
-  // -------------------------------
-  // Refetch selected song when:
-  // 1. selected song changes
-  // 2. user premium status changes
-  // -------------------------------
+
   useEffect(() => {
     if (selectedSong) {
       fetchSong();
@@ -509,6 +467,9 @@ export const SongProvider = ({ children }) => {
         setVolume,
         showFullPlayer,
         setShowFullPlayer,
+
+       
+        audioRef,
 
         fetchSongs,
         fetchSong,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import Player from "./Player";
+import FullScreenPlayer from "./FullScreenPlayer";
 import { FaBars } from "react-icons/fa";
 
 const Layout = ({ children }) => {
@@ -10,14 +11,13 @@ const Layout = ({ children }) => {
   return (
     <div className="h-screen bg-[#121212] text-white">
       <div className="h-[90%] flex relative">
-        
-        {/* Overlay */}
+        {/* Mobile overlay */}
         {sidebarOpen && (
           <div
             className="fixed inset-0 bg-black/50 z-[9998] lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
-        )}  
+        )}
 
         {/* Mobile Sidebar */}
         <div
@@ -35,7 +35,6 @@ const Layout = ({ children }) => {
 
         {/* Main Content */}
         <div className="w-full m-2 px-4 sm:px-6 pt-4 pb-28 rounded bg-[#212121] overflow-auto lg:w-[75%] relative z-10">
-          
           {/* Mobile top bar */}
           <div className="flex items-center justify-between mb-4 lg:hidden">
             <button
@@ -52,7 +51,11 @@ const Layout = ({ children }) => {
         </div>
       </div>
 
+      
       <Player />
+
+      
+      <FullScreenPlayer />
     </div>
   );
 };
