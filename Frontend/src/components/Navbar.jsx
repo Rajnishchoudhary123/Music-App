@@ -78,7 +78,7 @@ const Navbar = () => {
         
 {!isPremium ? (
   <button
-    onClick={buyPremium}
+    onClick={()=>navigate("/premium")}
     disabled={buttonLoading}
     className="hidden md:flex items-center gap-2 px-4 py-1 rounded-full bg-yellow-500 text-black text-sm font-medium hover:scale-105 transition disabled:opacity-60"
   >
@@ -105,7 +105,7 @@ const Navbar = () => {
     </button>
   </div>
 )}
-
+  
          
          <button
   onClick={() => logoutUser(navigate)}

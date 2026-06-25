@@ -9,21 +9,65 @@ const TryCatch = require("../utlis/TryCatch");
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 exports.createSubscription = TryCatch(async (req, res) => {
+  console.log("=== CREATE SUBSCRIPTION HIT ===");
+  console.log("req.user =>", req.user);
+  console.log("CLIENT_URL =>", process.env.CLIENT_URL);
+  console.log("STRIPE_PRICE_ID =>", process.env.STRIPE_PRICE_ID);
+  console.log("STRIPE_SECRET_KEY exists =>", !!process.env.STRIPE_SECRET_KEY);
+
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({
+      success: false,
+      message: "User not authenticated",
+    });
+  }
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return res.status(500).json({
+      success: false,
+      message: "Missing STRIPE_SECRET_KEY in .env",
+    });
+  }
+
+  if (!process.env.STRIPE_PRICE_ID) {
+    return res.status(500).json({
+      success: false,
+      message: "Missing STRIPE_PRICE_ID in .env",
+    });
+  }
+
+  if (!process.env.CLIENT_URL) {
+    return res.status(500).json({
+      success: false,
+      message: "Missing CLIENT_URL in .env",
+    });
+  }
+
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     payment_method_types: ["card"],
+    customer_email: user.email,
     line_items: [
       {
         price: process.env.STRIPE_PRICE_ID,
         quantity: 1,
       },
     ],
-    success_url: `${process.env.CLIENT_URL}/success`,
+    success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.CLIENT_URL}/cancel`,
-    client_reference_id: req.user._id.toString(),
+    client_reference_id: user._id.toString(),
   });
 
-  res.status(200).json({
+  return res.status(200).json({
     success: true,
     url: session.url,
   });
@@ -33,8 +77,6 @@ exports.stripeWebhook = async (req, res) => {
   console.log("=== STRIPE WEBHOOK HIT ===");
 
   const sig = req.headers["stripe-signature"];
-  console.log("signature:", !!sig);
-
   let event;
 
   try {
@@ -43,54 +85,53 @@ exports.stripeWebhook = async (req, res) => {
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-
-    console.log("event type:", event.type);
   } catch (error) {
     console.log("Webhook Error:", error.message);
     return res.status(400).send(`Webhook Error: ${error.message}`);
   }
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-    const userId = session.client_reference_id;
+  try {
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const userId = session.client_reference_id;
 
-    console.log("checkout.session.completed fired");
-    console.log("userId from session:", userId);
-    console.log("customer:", session.customer);
-    console.log("subscription:", session.subscription);
+      console.log("checkout.session.completed fired");
+      console.log("userId:", userId);
 
-    if (userId) {
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        {
-          isPremium: true,
-          premiumSince: new Date(),
-          stripeCustomerId: session.customer,
-          stripeSubscriptionId: session.subscription,
-        },
-        { new: true }
-      );
+      if (userId) {
+        const updatedUser = await User.findByIdAndUpdate(
+          userId,
+          {
+            isPremium: true,
+            premiumSince: new Date(),
+            stripeCustomerId: session.customer,
+            stripeSubscriptionId: session.subscription,
+          },
+          { new: true }
+        );
 
-      console.log("UPDATED USER:", updatedUser);
-    }
-  }
-
-  if (event.type === "customer.subscription.deleted") {
-    const subscription = event.data.object;
-
-    console.log("subscription deleted:", subscription.id);
-
-    await User.findOneAndUpdate(
-      { stripeSubscriptionId: subscription.id },
-      {
-        isPremium: false,
-        premiumSince: null,
-        stripeSubscriptionId: null,
+        console.log("UPDATED USER:", updatedUser);
       }
-    );
-  }
+    }
 
-  res.status(200).json({ received: true });
+    if (event.type === "customer.subscription.deleted") {
+      const subscription = event.data.object;
+
+      await User.findOneAndUpdate(
+        { stripeSubscriptionId: subscription.id },
+        {
+          isPremium: false,
+          premiumSince: null,
+          stripeSubscriptionId: null,
+        }
+      );
+    }
+
+    return res.status(200).json({ received: true });
+  } catch (error) {
+    console.log("WEBHOOK PROCESSING ERROR:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 exports.getPremiumSongs = TryCatch(async (req, res) => {
@@ -119,10 +160,8 @@ exports.cancelSubscription = TryCatch(async (req, res) => {
     });
   }
 
-  // Stripe subscription cancel
   await stripe.subscriptions.cancel(user.stripeSubscriptionId);
 
-  // DB update
   user.isPremium = false;
   user.stripeSubscriptionId = null;
   user.premiumSince = null;

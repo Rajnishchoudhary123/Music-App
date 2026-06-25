@@ -18,7 +18,7 @@ const PaymentRoutes = require("./routes/PaymentRoutes.js");
 const AuthRoutes = require("./routes/AuthRoutes.js");
 const AdminRoutes = require("./routes/AdminDashboardRoutes.js");
 const likeRoutes = require("./routes/likeRoutes.js");
-
+const paymentController = require("./Controller/PaymentController.js");
 require("./config/passport");
 const { stripeWebhook } = require("./Controller/PaymentController");
 
@@ -34,8 +34,7 @@ const PORT = process.env.PORT || 5000;
 server.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      process.env.FRONTEND_URL,
+      "http://localhost:5173"
     ],
     credentials: true,
   })
@@ -45,7 +44,7 @@ server.use(
 server.post(
   "/api/payment/webhook",
   express.raw({ type: "application/json" }),
-  stripeWebhook
+    paymentController.stripeWebhook
 );
 
 server.get("/", (req, res) => {
