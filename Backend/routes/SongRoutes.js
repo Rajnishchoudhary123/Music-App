@@ -17,14 +17,13 @@ const {
 
 const router = express.Router();
 
-// ---------------- PUBLIC ROUTES ----------------
 router.get("/all", getAllSongs);
 router.get("/album/all", getAllAlbums);
 router.get("/latest", getNewSongs);
 router.get("/single/:id", getSingleSong);
 router.get("/album/:id", getAllSongsByAlbum);
 
-// ---------------- PROTECTED ROUTES ----------------
+
 router.post("/new", uploadFile, isAuth, addSong);
 router.post("/thumbnail/:id", isAuth, uploadFile, addThumbnail);
 router.post("/album/new", uploadFile, isAuth, createAlbum);

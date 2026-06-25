@@ -13,7 +13,7 @@ exports.createAlbum = TryCatch(async (req, res) => {
 
   const { title, description } = req.body;
 
-  // IMPORTANT: uploadFile middleware req.files use kar raha hai
+ 
   const file = req.files?.file?.[0];
 
   console.log("BODY:", req.body);

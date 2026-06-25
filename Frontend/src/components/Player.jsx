@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  GrChapterPrevious,
-  GrChapterNext,
-} from "react-icons/gr";
+import { GrChapterPrevious, GrChapterNext } from "react-icons/gr";
 import {
   FaPause,
   FaPlay,
@@ -20,7 +17,8 @@ const Player = () => {
   const [duration, setDuration] = useState(0);
 
   const [volume, setVolume] = useState(() => {
-    return Number(localStorage.getItem("volume")) ?? 1;
+    const saved = localStorage.getItem("volume");
+    return saved !== null ? Number(saved) : 1;
   });
 
   const [muted, setMuted] = useState(false);
@@ -51,12 +49,8 @@ const Player = () => {
     const handleLoaded = () => {
       setDuration(audio.duration || 0);
 
-      const savedTime =
-        Number(localStorage.getItem("songProgress")) || 0;
-
+      const savedTime = Number(localStorage.getItem("songProgress")) || 0;
       audio.currentTime = savedTime;
-
-      // ❌ FIXED: NO AUTO PLAY HERE
     };
 
     const handleTime = () => {
@@ -82,9 +76,9 @@ const Player = () => {
       audio.removeEventListener("timeupdate", handleTime);
       audio.removeEventListener("ended", handleEnd);
     };
-  }, [song, repeat]);
+  }, [song, repeat, nextSong]);
 
-  // ---------------- CONTROL PLAY / PAUSE (IMPORTANT FIX) ----------------
+  // ---------------- CONTROL PLAY / PAUSE ----------------
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !song) return;
@@ -97,7 +91,8 @@ const Player = () => {
   }, [isPlaying, song]);
 
   // ---------------- PLAY / PAUSE BUTTON ----------------
-  const handlePlayPause = async () => {
+  const handlePlayPause = async (e) => {
+    e?.stopPropagation();
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -112,6 +107,7 @@ const Player = () => {
 
   // ---------------- SEEK BAR ----------------
   const handleProgressChange = (e) => {
+    e.stopPropagation();
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -125,9 +121,11 @@ const Player = () => {
     if (audioRef.current) {
       audioRef.current.volume = muted ? 0 : volume;
     }
+    localStorage.setItem("volume", volume);
   }, [volume, muted, song]);
 
   const handleVolumeChange = (e) => {
+    e.stopPropagation();
     const val = Number(e.target.value);
     setVolume(val);
     setMuted(val === 0);
@@ -137,7 +135,8 @@ const Player = () => {
     }
   };
 
-  const toggleMute = () => {
+  const toggleMute = (e) => {
+    e.stopPropagation();
     setMuted(!muted);
   };
 
@@ -152,113 +151,189 @@ const Player = () => {
   if (!song || !song.audio) return null;
 
   return (
+    <>
+      <audio ref={audioRef} src={song.audio.url} />
+
+      <div
+        className="fixed bottom-0 left-0 w-full bg-black/80 backdrop-blur-xl border-t border-white/10 text-white z-50"
+        onClick={() => setShowFullPlayer(true)}
+      >
+        
+        <div className="md:hidden px-3 pt-2 pb-3">
+  {/* Top row */}
+  <div className="grid grid-cols-[48px_1fr_auto] items-center gap-3">
+    
+    {/* Thumbnail */}
+    <img
+      src={song.thumbnail?.url}
+      alt={song.title}
+      className="w-12 h-12 rounded-lg object-cover"
+    />
+
+    {/* Song Info */}
+    <div className="min-w-0">
+      <p className="text-sm font-semibold truncate">{song.title}</p>
+      <p className="text-xs text-gray-400 truncate">{song.singer}</p>
+    </div>
+
+    {/* Buttons */}
     <div
-      className="h-20 bg-black cursor-pointer"
-      onClick={() => setShowFullPlayer(true)}
+      className="flex items-center gap-3 shrink-0"
+      onClick={(e) => e.stopPropagation()}
     >
-      <div className="fixed bottom-0 left-0 w-full h-24 bg-black/70 backdrop-blur-xl border-t border-white/10 text-white px-4 flex items-center justify-between z-50">
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          prevSong();
+        }}
+        className="text-lg p-1"
+      >
+        <GrChapterPrevious />
+      </button>
 
-        {/* LEFT */}
-        <div className="flex items-center gap-3 w-[25%]">
-          <img
-            src={song.thumbnail?.url}
-            className="w-14 h-14 rounded-lg object-cover shadow-lg"
-          />
+      <button
+        onClick={handlePlayPause}
+        className="bg-white text-black p-2.5 rounded-full flex items-center justify-center"
+      >
+        {isPlaying ? <FaPause size={14} /> : <FaPlay size={14} />}
+      </button>
 
-          <div className="hidden md:block">
-            <p className="font-medium">{song.title}</p>
-            <p className="text-gray-400 text-sm">{song.singer}</p>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          nextSong();
+        }}
+        className="text-lg p-1"
+      >
+        <GrChapterNext />
+      </button>
+    </div>
+  </div>
+
+  {/* Progress */}
+  <div
+    className="mt-2 flex items-center gap-2 text-[11px] text-gray-400"
+    onClick={(e) => e.stopPropagation()}
+  >
+    <span className="w-9 text-left">{formatTime(progress)}</span>
+
+    <input
+      type="range"
+      min="0"
+      max="100"
+      value={duration ? (progress / duration) * 100 : 0}
+      onChange={handleProgressChange}
+      className="w-full accent-green-500 cursor-pointer"
+    />
+
+    <span className="w-9 text-right">{formatTime(duration)}</span>
+  </div>
+</div>
+
+        {/* ---------------- DESKTOP PLAYER ---------------- */}
+        <div className="hidden md:flex h-24 px-4 items-center justify-between">
+          {/* LEFT */}
+          <div className="flex items-center gap-3 w-[25%] min-w-0">
+            <img
+              src={song.thumbnail?.url}
+              alt={song.title}
+              className="w-14 h-14 rounded-lg object-cover shadow-lg shrink-0"
+            />
+
+            <div className="min-w-0">
+              <p className="font-medium truncate">{song.title}</p>
+              <p className="text-gray-400 text-sm truncate">{song.singer}</p>
+            </div>
           </div>
-        </div>
 
-        {/* AUDIO */}
-        <audio ref={audioRef} src={song.audio.url} />
-
-        {/* CENTER CONTROLS */}
-        <div className="flex flex-col items-center w-[50%]">
-          <div className="flex items-center gap-5 text-lg">
-
-            <FaRandom
-              onClick={() => setShuffle(!shuffle)}
-              className={`cursor-pointer transition hover:scale-110 ${
-                shuffle ? "text-green-400" : "text-white/70"
-              }`}
-            />
-
-            <GrChapterPrevious
-              onClick={prevSong}
-              className="cursor-pointer hover:scale-110 transition"
-            />
-
-            <button
-              onClick={handlePlayPause}
-              className="bg-white text-black p-2 rounded-full hover:scale-110 transition"
+          {/* CENTER CONTROLS */}
+          <div className="flex flex-col items-center w-[50%] px-4">
+            <div
+              className="flex items-center gap-5 text-lg"
+              onClick={(e) => e.stopPropagation()}
             >
-              {isPlaying ? <FaPause /> : <FaPlay />}
-            </button>
+              <FaRandom
+                onClick={() => setShuffle(!shuffle)}
+                className={`cursor-pointer transition hover:scale-110 ${
+                  shuffle ? "text-green-400" : "text-white/70"
+                }`}
+              />
 
-            <GrChapterNext
-              onClick={nextSong}
-              className="cursor-pointer hover:scale-110 transition"
-            />
+              <GrChapterPrevious
+                onClick={prevSong}
+                className="cursor-pointer hover:scale-110 transition"
+              />
 
-            <TbRepeat
-              onClick={() =>
-                setRepeat(
-                  repeat === "off"
-                    ? "one"
-                    : repeat === "one"
-                    ? "all"
-                    : "off"
-                )
-              }
-              className={`cursor-pointer transition hover:scale-110 ${
-                repeat !== "off" ? "text-green-400" : "text-white/70"
-              }`}
-            />
+              <button
+                onClick={handlePlayPause}
+                className="bg-white text-black p-2 rounded-full hover:scale-110 transition"
+              >
+                {isPlaying ? <FaPause /> : <FaPlay />}
+              </button>
+
+              <GrChapterNext
+                onClick={nextSong}
+                className="cursor-pointer hover:scale-110 transition"
+              />
+
+              <TbRepeat
+                onClick={() =>
+                  setRepeat(
+                    repeat === "off"
+                      ? "one"
+                      : repeat === "one"
+                      ? "all"
+                      : "off"
+                  )
+                }
+                className={`cursor-pointer transition hover:scale-110 ${
+                  repeat !== "off" ? "text-green-400" : "text-white/70"
+                }`}
+              />
+            </div>
+
+            {/* PROGRESS BAR */}
+            <div
+              className="flex items-center gap-3 text-xs text-gray-400 w-full mt-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <span>{formatTime(progress)}</span>
+
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={duration ? (progress / duration) * 100 : 0}
+                onChange={handleProgressChange}
+                className="w-full accent-green-500 cursor-pointer"
+              />
+
+              <span>{formatTime(duration)}</span>
+            </div>
           </div>
 
-          {/* PROGRESS BAR */}
-          <div className="flex items-center gap-3 text-xs text-gray-400 w-full mt-1">
-            <span>{formatTime(progress)}</span>
+          {/* RIGHT */}
+          <div
+            className="flex items-center gap-3 w-[20%] justify-end"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <span onClick={toggleMute} className="cursor-pointer">
+              {muted || volume === 0 ? <FaVolumeMute /> : <FaVolumeUp />}
+            </span>
 
             <input
               type="range"
               min="0"
-              max="100"
-              value={duration ? (progress / duration) * 100 : 0}
-              onChange={handleProgressChange}
-              className="w-full accent-green-500 cursor-pointer"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+              className="accent-green-500 w-24 cursor-pointer"
             />
-
-            <span>-{formatTime(duration - progress)}</span>
           </div>
         </div>
-
-        {/* RIGHT */}
-        <div className="hidden md:flex items-center gap-3 w-[20%] justify-end">
-
-          <span onClick={toggleMute} className="cursor-pointer">
-            {muted || volume === 0 ? (
-              <FaVolumeMute />
-            ) : (
-              <FaVolumeUp />
-            )}
-          </span>
-
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={volume}
-            onChange={handleVolumeChange}
-            className="accent-green-500 w-24 cursor-pointer"
-          />
-        </div>
-
       </div>
-    </div>
+    </>
   );
 };
 

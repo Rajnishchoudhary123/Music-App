@@ -61,7 +61,7 @@ const Success = () => {
           </div>
         </div>
 
-        {/* Buttons */}
+
         <div className="relative z-10 flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/"
