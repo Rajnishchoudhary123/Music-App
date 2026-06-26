@@ -74,26 +74,25 @@ const Player = () => {
     };
   }, [audioRef, song?._id, song?.audio?.url, repeat, nextSong, progressKey]);
 
-  // change source + play/pause
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !song?.audio?.url) return;
 
-    const absoluteUrl = new URL(song.audio.url, window.location.origin).href;
+ useEffect(() => {
+  const audio = audioRef.current;
 
-    if (audio.src !== absoluteUrl) {
-      audio.pause();
-      audio.src = song.audio.url;
-      audio.load();
-      setProgress(0);
-    }
+  if (!audio || !song?.audio?.url) return;
 
-    if (isPlaying) {
-      audio.play().catch(() => {});
-    } else {
-      audio.pause();
-    }
-  }, [audioRef, song?.audio?.url, isPlaying]);
+
+  if (audio.dataset.songId !== song._id) {
+    audio.dataset.songId = song._id;
+    audio.src = song.audio.url;
+    audio.load();
+  }
+
+  if (isPlaying) {
+    audio.play().catch(() => {});
+  } else {
+    audio.pause();
+  }
+}, [song?._id, isPlaying]);
 
   // volume
   useEffect(() => {

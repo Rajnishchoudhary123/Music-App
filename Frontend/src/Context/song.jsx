@@ -73,26 +73,36 @@ export const SongProvider = ({ children }) => {
   }
 
 
-  async function fetchSong() {
-    try {
-      if (!selectedSong) return;
+ async function fetchSong() {
+  try {
+    if (!selectedSong) return;
 
-      const { data } = await axios.get("/api/songs/single/" + selectedSong, {
-        withCredentials: true,
-      });
-
-      if (data?.premium && !user?.isPremium) {
-        toast.error("Premium Required");
-        setSong(null);
-        setIsPlaying(false);
-        return;
-      }
-
-      setSong(data);
-    } catch (error) {
-      console.log("fetchSong error:", error);
+    if (song?._id === selectedSong) {
+      return;
     }
+
+    const { data } = await axios.get(
+      "/api/songs/single/" + selectedSong,
+      {
+        withCredentials: true,
+      }
+    );
+
+    if (data?.premium && !user?.isPremium) {
+      toast.error("Premium Required");
+      setSong(null);
+      setIsPlaying(false);
+      return;
+    }
+
+   
+    if (song?._id !== data._id) {
+      setSong(data);
+    }
+  } catch (error) {
+    console.log("fetchSong error:", error);
   }
+}
 
   async function fetchAlbums() {
     try {

@@ -15,7 +15,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
   const { setSelectedSong, setIsPlaying } = SongData();
   const navigate = useNavigate();
 
-  // Sync playlist + liked state
+
   useEffect(() => {
     if (user?.playlist?.includes(id)) {
       setSave(true);
