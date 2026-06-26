@@ -69,34 +69,100 @@ const LikedSongs = () => {
           )}
 
           {/* SONG GRID (NEW SPOTIFY STYLE GRID) */}
-          {!loading && songs.length > 0 && (
-            <div
-              className="
-                grid
-                grid-cols-2
-                sm:grid-cols-3
-                md:grid-cols-4
-                lg:grid-cols-5
-                gap-6
-                mt-6
-              "
-            >
-              {songs.map((song) => (
-                <div
-                  key={song._id}
-                  className="hover:scale-[1.03] transition-transform duration-300"
-                >
-                  <SongItem
-                    image={song.thumbnail?.url}
-                    name={song.title}
-                    singer={song.singer}
-                    id={song._id}
-                    premium={song.premium}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
+         {/* SONG LIST */}
+{!loading && songs.length > 0 && (
+  <div className="bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
+
+    {/* Desktop Header */}
+    <div className="hidden md:grid grid-cols-[60px_1fr_1fr_80px] px-5 py-3 border-b border-white/10 text-gray-400 text-sm">
+      <p>#</p>
+      <p>Title</p>
+      <p>Singer</p>
+      <p className="text-right">Play</p>
+    </div>
+
+    {songs.map((song, i) => (
+      <div
+        key={song._id}
+        onClick={() => {
+          song.clickHandler?.();
+        }}
+        className="
+          flex md:grid
+          md:grid-cols-[60px_1fr_1fr_80px]
+          items-center
+          gap-4
+          px-4 md:px-5
+          py-3
+          border-b border-white/10
+          hover:bg-white/5
+          transition
+          group
+          cursor-pointer
+        "
+      >
+        {/* Index */}
+        <div className="hidden md:block text-gray-400">
+          {i + 1}
+        </div>
+
+        {/* Song */}
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+
+          <img
+            src={song.thumbnail?.url}
+            alt={song.title}
+            className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
+          />
+
+          <div className="min-w-0">
+
+            <h3 className="font-semibold truncate group-hover:text-green-400 transition">
+              {song.title}
+            </h3>
+
+            <p className="text-sm text-gray-400 truncate">
+              {song.singer}
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* Desktop Singer */}
+        <p className="hidden md:block text-gray-300 truncate">
+          {song.singer}
+        </p>
+
+        {/* Play Button */}
+        <div className="flex justify-end">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              song.clickHandler?.();
+            }}
+            className="
+              w-10
+              h-10
+              rounded-full
+              bg-green-500
+              hover:bg-green-400
+              flex
+              items-center
+              justify-center
+              opacity-100 md:opacity-0
+              md:group-hover:opacity-100
+              transition
+            "
+          >
+            ▶
+          </button>
+        </div>
+
+      </div>
+    ))}
+  </div>
+)}
 
         </div>
       </div>
