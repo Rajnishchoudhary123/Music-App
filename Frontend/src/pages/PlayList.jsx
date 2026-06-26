@@ -50,42 +50,40 @@ const PlayList = ({user}) => {
 
   return (
   <Layout>
-    <div className="p-4 md:p-6 text-white">
+    <div className="p-6 text-white">
 
       {/* HEADER */}
-      <div className="flex flex-col md:flex-row items-center md:items-end gap-6 mb-10">
+      <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
 
-  <img
-    src={
-      myPlaylist.length
-        ? myPlaylist[0].thumbnail.url
-        : "https://via.placeholder.com/250"
-    }
-    alt=""
-    className="w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-2xl object-cover shadow-2xl"
-  />
+        <img
+          src={
+            myPlaylist && myPlaylist[0]
+              ? myPlaylist[0].thumbnail.url
+              : "https://via.placeholder.com/200"
+          }
+          className="w-44 h-44 object-cover rounded-2xl shadow-2xl"
+          alt=""
+        />
 
-  <div className="text-center md:text-left">
+        <div>
+          <p className="text-gray-400 uppercase tracking-widest text-sm">
+            Playlist
+          </p>
 
-    <p className="uppercase tracking-[3px] text-xs sm:text-sm text-gray-400">
-      Playlist
-    </p>
+          <h1 className="text-4xl md:text-5xl font-bold mt-2">
+            {user?.name} Playlist
+          </h1>
 
-    <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mt-2">
-      {user?.name}'s Playlist
-    </h1>
+          <p className="text-gray-400 mt-3">
+            Your favorite songs collection 🎧
+          </p>
 
-    <p className="text-gray-400 mt-3 text-sm sm:text-base">
-      Your favourite songs collection 🎧
-    </p>
+          <p className="text-sm text-gray-500 mt-2">
+            {myPlaylist.length} songs
+          </p>
+        </div>
 
-    <div className="flex justify-center md:justify-start gap-2 mt-4 text-gray-300">
-      <span>{myPlaylist.length} Songs</span>
-    </div>
-
-  </div>
-
-</div>
+      </div>
 
       {/* LIST HEADER */}
       <div className="hidden md:grid grid-cols-[50px_1fr_1fr_120px] px-4 py-3 text-gray-400 border-b border-white/10 text-sm">
@@ -96,99 +94,89 @@ const PlayList = ({user}) => {
       </div>
 
       {/* SONG LIST */}
-     <div className="mt-3">
+      <div className="mt-4 space-y-2">
 
-  {myPlaylist.map((e, i) => (
+        {myPlaylist.map((e, i) => (
+          <div
+            key={e._id}
+            className="
+              grid
+              grid-cols-[50px_1fr]
+              md:grid-cols-[50px_1fr_1fr_120px]
+              items-center
+              gap-3
+              px-4 py-3
+              rounded-xl
+              bg-[#121212]/60
+              border border-white/5
+              hover:bg-white/5
+              transition-all
+              group
+            "
+          >
 
-    <div
-      key={e._id}
-      className="
-      flex md:grid
-      md:grid-cols-[50px_1fr_1fr_120px]
-      items-center
-      gap-4
-      px-4
-      py-3
-      border-b border-white/10
-      hover:bg-white/5
-      transition
-      group
-      "
-    >
+            {/* INDEX */}
+            <p className="text-gray-400 group-hover:text-white">
+              {i + 1}
+            </p>
 
-      {/* Number */}
-      <p className="hidden md:block text-gray-400">
-        {i + 1}
-      </p>
+            {/* SONG INFO */}
+            <div className="flex items-center gap-3">
 
-      {/* Song */}
-      <div
-        onClick={() => onclickHander(e)}
-        className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer"
-      >
+              <img
+                src={e.thumbnail.url}
+                className="w-12 h-12 rounded-md object-cover"
+                alt=""
+              />
 
-        <img
-          src={e.thumbnail.url}
-          alt=""
-          className="w-14 h-14 rounded-lg object-cover flex-shrink-0"
-        />
+              <div>
+                <p className="font-medium group-hover:text-green-400 transition">
+                  {e.title}
+                </p>
 
-        <div className="min-w-0">
+                <p className="text-xs text-gray-400 hidden md:block">
+                  {e.description.slice(0, 30)}...
+                </p>
+              </div>
 
-          <h3 className="font-semibold truncate group-hover:text-green-400 transition">
-            {e.title}
-          </h3>
+            </div>
 
-          <p className="text-sm text-gray-400 truncate">
-            {e.singer}
-          </p>
+            {/* ARTIST */}
+            <p className="text-gray-300 hidden md:block">
+              {e.singer}
+            </p>
 
-        </div>
+            {/* ACTIONS */}
+            <div className="flex justify-end md:justify-center items-center gap-4">
 
-      </div>
+              {/* BOOKMARK */}
+              <button
+                onClick={() => savePlayListHandler(e._id)}
+                className="
+                  text-gray-400 hover:text-yellow-400
+                  transition text-lg
+                "
+              >
+                <FaBookmark />
+              </button>
 
-      {/* Desktop Artist */}
-      <p className="hidden md:block text-gray-300 truncate">
-        {e.singer}
-      </p>
+              {/* PLAY */}
+              <button
+                onClick={() => onclickHander(e)}
+                className="
+                  text-gray-400 hover:text-green-400
+                  transition text-lg
+                "
+              >
+                <FaPlay />
+              </button>
 
-      {/* Buttons */}
-      <div className="flex gap-4 justify-end">
+            </div>
 
-        <button
-          onClick={() => savePlayListHandler(e._id)}
-          className="text-gray-400 hover:text-yellow-400 transition text-lg"
-        >
-          <FaBookmark />
-        </button>
-
-        <button
-          onClick={() => onclickHander(e)}
-          className="
-            w-9
-            h-9
-            rounded-full
-            bg-green-500
-            flex
-            items-center
-            justify-center
-            hover:scale-110
-            transition
-          "
-        >
-          <FaPlay
-            className="text-black"
-            size={12}
-          />
-        </button>
+          </div>
+        ))}
 
       </div>
-
-    </div>
-
-  ))}
-
-</div>
 
     </div>
   </Layout>
