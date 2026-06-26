@@ -20,6 +20,7 @@ import Dashboard from "./pages/Dashboard";
 import AlbumPage from "./pages/AlbumPage";
 import Albums from "./components/Album";
 import RecentlyPlayed from "./pages/RecentlyPlayed";
+import Player from "./components/Player";
 import AllSongs from "./pages/AllSongs";
 import LikedSongs from "./pages/LikedSongs";
 import Cancel from "./pages/Cancel";
@@ -54,7 +55,7 @@ function AppRoutes({ isAuth, user }) {
          <Route path="/cancel-subscription" element={<Cancel />} />
       </Routes>
 
-    
+      {!shouldHidePlayer && isAuth && <Player />}
     </>
   );
 }

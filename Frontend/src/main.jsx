@@ -5,7 +5,7 @@ import App from './App.jsx'
 import { UserProvider } from './Context/user.jsx'
 import { SongProvider } from './Context/song.jsx'
 import Player from './components/Player.jsx'
-import FullScreenPlayer from './components/FullScreenPlayer.jsx'
+// import FullScreenPlayer from './components/FullScreenPlayer.jsx'
 
 
 

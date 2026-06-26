@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import Player from "./Player";
-import FullScreenPlayer from "./FullScreenPlayer";
+// import Player from "./Player";
+// import FullScreenPlayer from "./FullScreenPlayer";
 import { FaBars } from "react-icons/fa";
 
 const Layout = ({ children }) => {
@@ -51,10 +51,10 @@ const Layout = ({ children }) => {
       </div>
 
       
-      <Player />
+      {/* <Player /> */}
 
       
-      <FullScreenPlayer />
+      {/* <FullScreenPlayer /> */}
     </div>
   );
 };

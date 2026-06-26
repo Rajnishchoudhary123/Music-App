@@ -51,7 +51,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
     setIsPlaying(true);
   };
 
-  // Playlist handler
+
   const savetoPlaylistHandler = () => {
     setSave(!save);
     addToPlaylist(id);

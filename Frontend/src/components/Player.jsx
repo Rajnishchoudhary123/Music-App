@@ -35,7 +35,13 @@ const Player = () => {
 
   const progressKey = song?._id ? `songProgress_${song._id}` : "songProgress";
 
-  // load metadata + progress
+  useEffect(() => {
+  console.log("Player Mounted");
+
+  return () => {
+    console.log("Player Unmounted");
+  };
+}, []);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !song?.audio?.url) return;
