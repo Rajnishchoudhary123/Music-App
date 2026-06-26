@@ -29,90 +29,120 @@ const AlbumPage = () => {
 
   return (
     <Layout>
-      <div className="p-6 text-white space-y-8">
+      <div className="p-4 md:p-6 text-white space-y-8">
 
-        {/* HERO */}
-        <div className="bg-gradient-to-br from-purple-800 via-purple-900 to-black rounded-3xl p-6 md:p-10 shadow-2xl">
+        {/* Hero */}
+        <div className="bg-gradient-to-br from-purple-800 via-purple-900 to-black rounded-3xl p-5 md:p-10 shadow-2xl">
 
-          <div className="flex flex-col md:flex-row gap-6 md:items-end items-center">
+          <div className="flex flex-col md:flex-row gap-6 items-center md:items-end">
 
             <img
               src={album?.thumbnail?.url}
-              className="w-52 h-52 md:w-60 md:h-60 object-cover rounded-2xl shadow-xl"
+              alt={album?.title}
+              className="w-40 h-40 sm:w-52 sm:h-52 md:w-60 md:h-60 rounded-2xl object-cover shadow-xl"
             />
 
-            <div>
-              <p className="text-sm text-gray-300 uppercase tracking-widest">
+            <div className="text-center md:text-left">
+
+              <p className="text-xs sm:text-sm text-gray-300 uppercase tracking-widest">
                 Album
               </p>
 
-              <h1 className="text-4xl md:text-6xl font-bold mt-2">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mt-2">
                 {album?.title}
               </h1>
 
-              <p className="text-gray-300 mt-3 max-w-2xl">
+              <p className="text-gray-300 mt-3 max-w-2xl text-sm sm:text-base">
                 {album?.description}
               </p>
 
-              <div className="flex items-center gap-2 mt-4 text-gray-300">
+              <div className="flex items-center justify-center md:justify-start gap-2 mt-4 text-gray-300">
                 <FaMusic />
                 <span>{songs.length} Songs</span>
               </div>
-            </div>
 
+            </div>
           </div>
         </div>
 
-        {/* LIST HEADER */}
+        {/* Songs */}
         <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden">
 
-          <div className="grid grid-cols-[50px_1fr_1fr_80px] px-5 py-3 text-gray-400 text-sm border-b border-white/10">
+          {/* Desktop Header */}
+          <div className="hidden md:grid grid-cols-[50px_1fr_1fr_80px] px-5 py-3 text-gray-400 text-sm border-b border-white/10">
             <p>#</p>
             <p>Title</p>
             <p>Singer</p>
             <p className="text-right">Play</p>
           </div>
 
-          {/* SONG ROWS */}
           {songs.length > 0 ? (
             songs.map((song, i) => (
               <div
                 key={song._id}
-                className="grid grid-cols-[50px_1fr_1fr_80px] px-5 py-3 items-center hover:bg-white/5 transition cursor-pointer"
+                onClick={() => playSong(song._id)}
+                className="
+                  flex md:grid
+                  md:grid-cols-[50px_1fr_1fr_80px]
+                  items-center
+                  px-4 md:px-5
+                  py-3
+                  border-b border-white/10
+                  hover:bg-white/5
+                  transition
+                  cursor-pointer
+                "
               >
-
-                {/* INDEX */}
-                <p className="text-gray-400">{i + 1}</p>
-
-                {/* TITLE */}
-                <div className="flex items-center gap-3">
-                  <img
-                    src={song.thumbnail?.url}
-                    className="w-10 h-10 rounded object-cover"
-                  />
-                  <p className="font-medium">{song.title}</p>
+                {/* Number */}
+                <div className="hidden md:block text-gray-400">
+                  {i + 1}
                 </div>
 
-                {/* SINGER */}
-                <p className="text-gray-400">{song.singer}</p>
+                {/* Thumbnail + Title */}
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <img
+                    src={song.thumbnail?.url}
+                    alt={song.title}
+                    className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                  />
 
-                {/* PLAY BUTTON */}
-                <div className="flex justify-end">
+                  <div className="min-w-0">
+                    <p className="font-medium truncate">
+                      {song.title}
+                    </p>
+
+                    {/* Mobile Singer */}
+                    <p className="md:hidden text-gray-400 text-sm truncate">
+                      {song.singer}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Desktop Singer */}
+                <p className="hidden md:block text-gray-400 truncate">
+                  {song.singer}
+                </p>
+
+                {/* Play */}
+                <div className="ml-3 md:ml-0 flex justify-end">
                   <button
-                    onClick={() => playSong(song._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      playSong(song._id);
+                    }}
                     className="bg-green-500 hover:bg-green-400 text-black p-2 rounded-full transition"
                   >
                     <FaPlay size={12} />
                   </button>
                 </div>
-
               </div>
             ))
           ) : (
-            <div className="p-10 text-center text-gray-400">
+            <div className="p-8 md:p-10 text-center text-gray-400">
               No songs found in this album
             </div>
           )}
+
         </div>
 
       </div>
