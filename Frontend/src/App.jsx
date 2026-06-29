@@ -28,8 +28,8 @@ import Cancel from "./pages/Cancel";
 function AppRoutes({ isAuth, user }) {
   const location = useLocation();
 
-  // jin routes par player hide chahiye
-  const hidePlayerRoutes = ["/login", "/register", "/admin"];
+
+  const hidePlayerRoutes = ["/login", "/register", "/admin" , "/premium" , "/success"];
   const shouldHidePlayer = hidePlayerRoutes.includes(location.pathname);
 
   return (
