@@ -22,7 +22,8 @@ router.get(
 
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "lax",
+      secure : true ,
+      sameSite: "none",
     });
 
    res.redirect(process.env.FRONTEND_URL);

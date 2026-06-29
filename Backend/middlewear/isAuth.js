@@ -8,8 +8,9 @@ const isAuth = async (req, res, next) => {
   try {
     const token = req.cookies?.token;
 
-    console.log("Cookies:", req.cookies);
-    console.log("Token:", token);
+   console.log("URL:", req.originalUrl);
+console.log("Method:", req.method);
+console.log("Cookies:", req.cookies);
 
     if (!token) {
       return res.status(403).json({
