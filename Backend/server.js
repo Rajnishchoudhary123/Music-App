@@ -18,7 +18,7 @@ const AuthRoutes = require("./routes/AuthRoutes.js");
 const AdminRoutes = require("./routes/AdminDashboardRoutes.js");
 const likeRoutes = require("./routes/likeRoutes.js");
 const paymentController = require("./Controller/PaymentController.js");
-const otpRoutes = require("./routes/otpRoutes.js");
+
 require("./config/passport");
 
 cloudinary.v2.config({
@@ -76,7 +76,6 @@ server.use("/api/songs", SongRoutes);
 server.use("/api/payment", PaymentRoutes);
 server.use("/api/auth", AuthRoutes);
 server.use("/api/admin", AdminRoutes);
-server.use("/api/otp", otpRoutes);
 
 connectDB();
 
