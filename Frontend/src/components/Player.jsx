@@ -40,8 +40,6 @@ const Player = () => {
     if (!audio || !song?.audio?.url) return;
 
     const handleLoaded = () => {
-      console.log("LOADED", audio.currentSrc);
-  console.trace("loadedmetadata");
       setDuration(audio.duration || 0);
 
       const savedTime = Number(localStorage.getItem(progressKey)) || 0;
@@ -79,10 +77,6 @@ const Player = () => {
 
 useEffect(() => {
 
-   console.log("PLAY EFFECT", {
-    id: song?._id,
-    playing: isPlaying,
-  });
   const audio = audioRef.current;
   if (!audio || !song?.audio?.url) return;
 
@@ -126,9 +120,6 @@ useEffect(() => {
   };
 
   const handleProgressChange = (e) => {
-
-    console.log("seek")
-
     e.stopPropagation();
     const audio = audioRef.current;
     if (!audio || !duration) return;
