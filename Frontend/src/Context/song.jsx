@@ -396,6 +396,8 @@ export const SongProvider = ({ children }) => {
     }
   }
 
+  
+
 const togglePlay = async () => {
   const audio = document.querySelector("audio");
   if (!audio) return;
