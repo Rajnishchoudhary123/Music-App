@@ -99,6 +99,7 @@ const Login = () => {
     py-3
     rounded-full
     transition
+    cursor-pointer
   "
 >
   <FcGoogle className="text-xl" />
@@ -120,6 +121,7 @@ const Login = () => {
             transition
             shadow-lg
             hover:shadow-green-500/30
+            cursor-pointer
           "
         >
           {buttonLoading ? "Please wait..." : "Login"}

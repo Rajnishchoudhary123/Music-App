@@ -123,6 +123,7 @@ const Register = () => {
             transition
             shadow-lg
             hover:shadow-green-500/30
+            cursor-pointer
           "
         >
           {buttonLoading ? "Please wait..." : "Sign up"}
@@ -138,7 +139,7 @@ const Register = () => {
           className="text-green-400 hover:underline"
         >
           Login
-        </Link>
+        </Link> 
       </p>
 
     </div>
