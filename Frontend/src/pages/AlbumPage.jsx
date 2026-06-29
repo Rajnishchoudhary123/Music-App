@@ -130,7 +130,7 @@ const AlbumPage = () => {
                       e.stopPropagation();
                       playSong(song._id);
                     }}
-                    className="bg-green-500 hover:bg-green-400 text-black p-2 rounded-full transition"
+                    className="bg-green-500 hover:bg-green-400 text-black p-2 rounded-full transition cursor-pointer"
                   >
                     <FaPlay size={12} />
                   </button>

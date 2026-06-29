@@ -82,7 +82,7 @@ const RecentlyPlayed = () => {
                         setSelectedSong(song._id);
                         setIsPlaying(true);
                       }}
-                      className="text-green-400 hover:scale-110 transition text-xl"
+                      className="text-green-400 hover:scale-110 transition text-xl cursor-pointer"
                     >
                       ▶
                     </button>

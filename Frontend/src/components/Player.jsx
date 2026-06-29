@@ -48,6 +48,8 @@ const Player = () => {
       }
     };
 
+    console.log("player rendering" , isPlaying)
+
     const handleTime = () => {
       setProgress(audio.currentTime || 0);
       localStorage.setItem(progressKey, audio.currentTime);

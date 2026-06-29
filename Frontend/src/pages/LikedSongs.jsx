@@ -3,11 +3,13 @@ import Layout from "../components/Layout";
 import SongItem from "../components/SongItem";
 import { UserData } from "../Context/user";
 import { FaHeartBroken } from "react-icons/fa";
+import { SongData } from "../Context/song";
 
 const LikedSongs = () => {
   const { getLikedSongs } = UserData();
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const{setSelectedSong , setIsPlaying} = SongData()
 
   useEffect(() => {
     async function load() {
@@ -86,6 +88,8 @@ const LikedSongs = () => {
         key={song._id}
         onClick={() => {
           song.clickHandler?.();
+          setSelectedSong(song._id);
+          setIsPlaying(true)
         }}
         className="
           flex md:grid
@@ -140,6 +144,8 @@ const LikedSongs = () => {
             onClick={(e) => {
               e.stopPropagation();
               song.clickHandler?.();
+              setSelectedSong(song._id);
+              setIsPlaying(true)
             }}
             className="
               w-10
@@ -153,6 +159,7 @@ const LikedSongs = () => {
               opacity-100 md:opacity-0
               md:group-hover:opacity-100
               transition
+              cursor-pointer
             "
           >
             ▶

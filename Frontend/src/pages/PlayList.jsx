@@ -113,6 +113,7 @@ const PlayList = ({user}) => {
       hover:bg-white/5
       transition
       group
+      cursor-pointer
       "
     >
 
@@ -157,7 +158,7 @@ const PlayList = ({user}) => {
 
         <button
           onClick={() => savePlayListHandler(e._id)}
-          className="text-gray-400 hover:text-yellow-400 transition text-lg"
+          className="text-gray-400 hover:text-yellow-400 transition text-lg cursor-pointer"
         >
           <FaBookmark />
         </button>
@@ -174,6 +175,7 @@ const PlayList = ({user}) => {
             justify-center
             hover:scale-110
             transition
+            cursor-pointer
           "
         >
           <FaPlay
