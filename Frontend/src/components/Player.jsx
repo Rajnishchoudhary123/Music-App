@@ -189,7 +189,7 @@ useEffect(() => {
 
               <button
                 onClick={handlePlayPause}
-                className="bg-white text-black p-2.5 rounded-full flex items-center justify-center"
+                className="bg-white text-black p-2.5 rounded-full flex items-center justify-center "
               >
                 {isPlaying ? <FaPause size={14} /> : <FaPlay size={14} />}
               </button>
@@ -259,7 +259,7 @@ useEffect(() => {
 
               <button
                 onClick={handlePlayPause}
-                className="bg-white text-black p-2 rounded-full hover:scale-110 transition"
+                className="bg-white text-black p-2 rounded-full hover:scale-110 transition cursor-pointer"
               >
                 {isPlaying ? <FaPause /> : <FaPlay />}
               </button>

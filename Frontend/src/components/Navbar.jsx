@@ -72,7 +72,7 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => navigate("/dashboard")}
-              className="px-4 py-1 rounded-full bg-white  text-black text-sm font-medium hover:scale-105 transition cursor-pointer"
+              className="px-4 py-1 rounded-full bg-white text-black text-sm font-medium hover:scale-105 transition cursor-pointer"
             >
               Dashboard
             </button>

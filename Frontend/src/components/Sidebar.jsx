@@ -112,7 +112,7 @@ const Sidebar = ({ mobile = false, closeSidebar }) => {
           {user?.role === "admin" && (
             <button
               onClick={() => handleNavigate("/admin")}
-              className={`mt-4 w-full py-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 text-black font-semibold hover:scale-[1.03] transition ${
+              className={`mt-4 w-full py-2 rounded-full cursor-pointer bg-gradient-to-r from-green-500 to-emerald-600 text-black font-semibold hover:scale-[1.03] transition ${
                 collapsed ? "text-xs px-1" : ""
               }`}
             >
