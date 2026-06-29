@@ -396,10 +396,10 @@ export const SongProvider = ({ children }) => {
     }
   }
 
-  
+
 
 const togglePlay = async () => {
-  const audio = document.querySelector("audio");
+  const audio = audioRef.current;
   if (!audio) return;
 
   try {
@@ -410,8 +410,8 @@ const togglePlay = async () => {
       audio.pause();
       setIsPlaying(false);
     }
-  } catch (error) {
-    console.log("togglePlay error:", error);
+  } catch (err) {
+    console.log(err);
   }
 };
 

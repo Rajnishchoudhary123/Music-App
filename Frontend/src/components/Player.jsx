@@ -40,6 +40,8 @@ const Player = () => {
     if (!audio || !song?.audio?.url) return;
 
     const handleLoaded = () => {
+      console.log("LOADED", audio.currentSrc);
+  console.trace("loadedmetadata");
       setDuration(audio.duration || 0);
 
       const savedTime = Number(localStorage.getItem(progressKey)) || 0;
@@ -48,7 +50,6 @@ const Player = () => {
       }
     };
 
-    console.log("player rendering" , isPlaying)
 
     const handleTime = () => {
       setProgress(audio.currentTime || 0);
@@ -76,26 +77,29 @@ const Player = () => {
   }, [audioRef, song?._id, song?.audio?.url, repeat, nextSong, progressKey]);
 
 
- useEffect(() => {
-  const audio = audioRef.current;
+useEffect(() => {
 
+   console.log("PLAY EFFECT", {
+    id: song?._id,
+    playing: isPlaying,
+  });
+  const audio = audioRef.current;
   if (!audio || !song?.audio?.url) return;
 
-
-  if (audio.dataset.songId !== song._id) {
-    audio.dataset.songId = song._id;
+  if (audio.src !== song.audio.url) {
     audio.src = song.audio.url;
-    audio.load();
   }
 
-  if (isPlaying) {
+  if (isPlaying && audio.paused) {
     audio.play().catch(() => {});
-  } else {
+  }
+
+  if (!isPlaying && !audio.paused) {
     audio.pause();
   }
 }, [song?._id, isPlaying]);
 
-  // volume
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -122,6 +126,9 @@ const Player = () => {
   };
 
   const handleProgressChange = (e) => {
+
+    console.log("seek")
+
     e.stopPropagation();
     const audio = audioRef.current;
     if (!audio || !duration) return;
@@ -219,7 +226,7 @@ const Player = () => {
               min="0"
               max="100"
               value={duration ? (progress / duration) * 100 : 0}
-              onChange={handleProgressChange}
+              onInput={handleProgressChange}
               className="w-full accent-green-500 cursor-pointer"
             />
 
@@ -298,7 +305,7 @@ const Player = () => {
                 min="0"
                 max="100"
                 value={duration ? (progress / duration) * 100 : 0}
-                onChange={handleProgressChange}
+                onInput={handleProgressChange}
                 className="w-full accent-green-500 cursor-pointer"
               />
 
