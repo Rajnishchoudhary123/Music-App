@@ -65,20 +65,6 @@ const Sidebar = ({ mobile = false, closeSidebar }) => {
             {!collapsed && <p className="font-semibold">Library</p>}
           </div>
 
-          {!collapsed && (
-            <div className="flex items-center gap-2">
-              <img
-                src={assets.arrow_icon}
-                className="w-7 p-1 rounded-full hover:bg-white/10 cursor-pointer"
-                alt=""
-              />
-              <img
-                src={assets.plus_icon}
-                className="w-7 p-1 rounded-full hover:bg-white/10 cursor-pointer"
-                alt=""
-              />
-            </div>
-          )}
         </div>
 
         <div className="p-3 flex-1 overflow-y-auto">
