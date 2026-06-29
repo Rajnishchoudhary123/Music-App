@@ -164,6 +164,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
               hover:bg-red-500
               transition
               shadow-md
+              cursor-pointer
             "
           >
             <FaHeart className={liked ? "text-red-500" : "text-white"} />
@@ -182,6 +183,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
             group-hover:opacity-100
             transition
             hover:bg-green-500
+            cursor-pointer
           "
           onClick={(e) => {
             e.stopPropagation();

@@ -38,7 +38,7 @@ const Sidebar = ({ mobile = false, closeSidebar }) => {
 
         <button
           onClick={handleMenuClick}
-          className="p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition"
+          className="p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition cursor-pointer"
         >
           <FaBars />
         </button>

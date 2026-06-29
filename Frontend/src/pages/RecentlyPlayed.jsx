@@ -45,10 +45,9 @@ const RecentlyPlayed = () => {
                 <p>Singer</p>
                 <p className="text-right">Play</p>
               </div>
-
-              {/* Rows */}
               {recentSongs.map((song, i) => (
                 <div
+
                   key={song._id}
                   onClick={() => {
                     setSelectedSong(song._id);
@@ -91,7 +90,6 @@ const RecentlyPlayed = () => {
               ))}
             </div>
 
-            {/* ===================== Mobile Cards ===================== */}
             <div className="md:hidden space-y-3">
               {recentSongs.map((song, i) => (
                 <div

@@ -67,14 +67,14 @@ const Home = () => {
 
             <div className="mt-6 flex gap-3">
               <button
-                className="px-5 py-2 bg-white text-black rounded-full font-semibold hover:scale-105 transition"
+                className="px-5 py-2 bg-white text-black rounded-full font-semibold  hover:scale-105 transition cursor-pointer"
                 onClick={() => navigate("/premium")}
               >
                 Explore
               </button>
 
               <button
-                className="px-5 py-2 bg-white/10 border border-white/20 rounded-full hover:bg-white/20 transition"
+                className="px-5 py-2 bg-white/10 border border-white/20 rounded-full hover:bg-white/20 transition cursor-pointer"
                 onClick={() => navigate("/premium")}
               >
                 Premium
@@ -100,7 +100,7 @@ const Home = () => {
               </div>
 
               <button
-                className="text-sm text-gray-400 hover:text-white transition"
+                className="text-sm text-gray-400 hover:text-white transition cursor-pointer"
                 onClick={() => navigate("/songs")}
               >
                 View All →

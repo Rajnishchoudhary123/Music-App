@@ -37,9 +37,9 @@ const Layout = ({ children }) => {
           <div className="flex items-center justify-between mb-4 lg:hidden">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition"
+              className="p-2 rounded-full bg-[#1a1a1a] hover:bg-[#2a2a2a] transition cursor-pointer"
             >
-              <FaBars />
+              <FaBars/>
             </button>
             <p className="font-bold text-lg">Music App</p>
           </div>
