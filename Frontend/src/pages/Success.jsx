@@ -8,29 +8,29 @@ const Success = () => {
       
       <div className="w-full max-w-xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl rounded-3xl p-8 md:p-10 text-center relative overflow-hidden">
         
-        {/* Glow circles */}
+        
         <div className="absolute -top-16 -left-16 w-40 h-40 bg-green-500/20 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-16 -right-16 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl"></div>
 
-        {/* Success Icon */}
+        
         <div className="relative z-10 flex justify-center mb-5">
           <div className="bg-green-500/20 p-5 rounded-full border border-green-400/30 shadow-lg">
             <FaCheckCircle className="text-green-400 text-6xl" />
           </div>
         </div>
 
-        {/* Title */}
+        
         <h1 className="relative z-10 text-3xl md:text-4xl font-bold text-white mb-3">
           Payment Successful 🎉
         </h1>
 
-        {/* Subtitle */}
+        
         <p className="relative z-10 text-gray-300 text-base md:text-lg leading-relaxed mb-6">
           Congratulations! Your premium subscription has been activated successfully.
           Now enjoy unlimited music, premium songs, and an ad-free experience.
         </p>
 
-        {/* Premium badge */}
+        
         <div className="relative z-10 flex justify-center mb-8">
           <div className="flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-semibold px-5 py-3 rounded-full shadow-lg">
             <FaCrown className="text-lg" />
@@ -38,7 +38,7 @@ const Success = () => {
           </div>
         </div>
 
-        {/* Features */}
+       
         <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-left">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-gray-200">
             <div className="flex items-center gap-2 mb-2">

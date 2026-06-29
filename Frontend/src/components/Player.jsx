@@ -159,14 +159,14 @@ const Player = () => {
 
   return (
     <>
-      {/* ✅ ONLY ONE AUDIO TAG IN WHOLE APP */}
+     
       <audio ref={audioRef} preload="metadata" />
 
       <div
         className="fixed bottom-0 left-0 w-full bg-black/80 backdrop-blur-xl border-t border-white/10 text-white z-50"
         onClick={() => setShowFullPlayer(true)}
       >
-        {/* MOBILE */}
+       
         <div className="md:hidden px-3 pt-2 pb-3">
           <div className="grid grid-cols-[48px_1fr_auto] items-center gap-3">
             <img

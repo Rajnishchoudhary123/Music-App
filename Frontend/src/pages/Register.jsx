@@ -27,7 +27,7 @@ const Register = () => {
   return (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-[#0f0f0f] to-purple-900 text-white p-6">
 
-    {/* REGISTER CARD */}
+
     <div className="
       w-full max-w-md
       bg-[#0f0f0f]/80
@@ -38,7 +38,7 @@ const Register = () => {
       shadow-[0_0_60px_rgba(0,0,0,0.7)]
     ">
 
-      {/* TITLE */}
+    
       <h1 className="text-4xl font-extrabold text-center">
         🎵 Music App
       </h1>
@@ -47,10 +47,10 @@ const Register = () => {
         Create your account to start listening
       </p>
 
-      {/* FORM */}
+     
       <form className="space-y-4 mt-8" onSubmit={submitHandler}>
 
-        {/* NAME */}
+       
         <input
           type="text"
           placeholder="Username"
@@ -69,7 +69,7 @@ const Register = () => {
           "
         />
 
-        {/* EMAIL */}
+        
         <input
           type="email"
           placeholder="Email"
@@ -89,7 +89,6 @@ const Register = () => {
           "
         />
 
-        {/* PASSWORD */}
         <input
           type="password"
           placeholder="Password"
@@ -109,7 +108,7 @@ const Register = () => {
           "
         />
 
-        {/* SIGNUP BUTTON */}
+        
         <button
           type="submit"
           disabled={buttonLoading}
@@ -131,7 +130,7 @@ const Register = () => {
 
       </form>
 
-      {/* LOGIN LINK */}
+      
       <p className="text-gray-400 text-center mt-6 text-sm">
         Already have an account?{" "}
         <Link

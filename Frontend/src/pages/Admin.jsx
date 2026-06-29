@@ -108,7 +108,6 @@ const addThumbnailHandler = (id) => {
   return (
   <div className="min-h-screen bg-gradient-to-b from-black via-[#0f0f0f] to-[#121212] text-white p-6 md:p-10">
 
-    {/* HEADER */}
     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
 
       <Link
@@ -124,10 +123,10 @@ const addThumbnailHandler = (id) => {
 
     </div>
 
-    {/* GRID WRAPPER */}
+   
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-      {/* ADD ALBUM */}
+    
       <div className="bg-[#141414]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg">
 
         <h2 className="text-2xl font-semibold mb-4">➕ Add Album</h2>
@@ -170,7 +169,7 @@ const addThumbnailHandler = (id) => {
         </form>
       </div>
 
-      {/* ADD SONG */}
+    
       <div className="bg-[#141414]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg">
 
         <h2 className="text-2xl font-semibold mb-4">🎵 Add Song</h2>
@@ -264,7 +263,7 @@ const addThumbnailHandler = (id) => {
       </div>
     </div>
 
-    {/* SONG LIST */}
+   
     <div className="mt-10">
 
       <h3 className="text-2xl font-bold mb-5">🎶 Songs Library</h3>
@@ -277,7 +276,6 @@ const addThumbnailHandler = (id) => {
   className="bg-[#141414]/80 border border-white/10 rounded-2xl p-4 hover:scale-[1.02] transition flex flex-col gap-3"
 >
 
-  {/* THUMBNAIL */}
   {e.thumbnail ? (
     <img
       src={e.thumbnail.url}
@@ -290,14 +288,14 @@ const addThumbnailHandler = (id) => {
     </div>
   )}
 
-  {/* INFO */}
+
   <div>
     <h4 className="font-semibold">{e.title}</h4>
     <p className="text-sm text-gray-400">{e.singer}</p>
     <p className="text-xs text-gray-500">{e.description}</p>
   </div>
 
-  {/* THUMBNAIL UPLOAD */}
+ 
   <div className="flex items-center gap-2 bg-[#1a1a1a] p-2 rounded-xl">
 
     <input
@@ -316,7 +314,6 @@ const addThumbnailHandler = (id) => {
 
   </div>
 
-  {/* ACTION BUTTONS */}
   <div className="flex items-center justify-between mt-2">
 
     <span className="text-xs text-gray-500">

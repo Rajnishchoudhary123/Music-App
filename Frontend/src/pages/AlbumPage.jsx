@@ -31,7 +31,7 @@ const AlbumPage = () => {
     <Layout>
       <div className="p-4 md:p-6 text-white space-y-8">
 
-        {/* Hero */}
+        
         <div className="bg-gradient-to-br from-purple-800 via-purple-900 to-black rounded-3xl p-5 md:p-10 shadow-2xl">
 
           <div className="flex flex-col md:flex-row gap-6 items-center md:items-end">
@@ -65,10 +65,10 @@ const AlbumPage = () => {
           </div>
         </div>
 
-        {/* Songs */}
+       
         <div className="bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden">
 
-          {/* Desktop Header */}
+          
           <div className="hidden md:grid grid-cols-[50px_1fr_1fr_80px] px-5 py-3 text-gray-400 text-sm border-b border-white/10">
             <p>#</p>
             <p>Title</p>
@@ -93,12 +93,12 @@ const AlbumPage = () => {
                   cursor-pointer
                 "
               >
-                {/* Number */}
+             
                 <div className="hidden md:block text-gray-400">
                   {i + 1}
                 </div>
 
-                {/* Thumbnail + Title */}
+                
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                   <img
                     src={song.thumbnail?.url}
@@ -111,19 +111,19 @@ const AlbumPage = () => {
                       {song.title}
                     </p>
 
-                    {/* Mobile Singer */}
+                 
                     <p className="md:hidden text-gray-400 text-sm truncate">
                       {song.singer}
                     </p>
                   </div>
                 </div>
 
-                {/* Desktop Singer */}
+                
                 <p className="hidden md:block text-gray-400 truncate">
                   {song.singer}
                 </p>
 
-                {/* Play */}
+                
                 <div className="ml-3 md:ml-0 flex justify-end">
                   <button
                     onClick={(e) => {

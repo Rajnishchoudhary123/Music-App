@@ -30,7 +30,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
     }
   }, [user, id]);
 
-  // Play song
+  
   const playSong = () => {
     if (premium && !user?.isPremium) {
       toast.error("Premium Required");
@@ -57,7 +57,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
     addToPlaylist(id);
   };
 
-  // Like handler
+  
   const handleLike = (e) => {
     e.stopPropagation();
     toggleLikeSong(id);
@@ -83,7 +83,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
         relative
       "
     >
-      {/* IMAGE */}
+      
       <div
         className="
           relative
@@ -106,7 +106,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
           "
         />
 
-        {/* OVERLAY */}
+        
         <div className="
           absolute inset-0
           bg-black/0
@@ -114,7 +114,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
           transition
         " />
 
-        {/* PLAY BUTTON */}
+        
         <div className="
           absolute inset-0
           flex items-center justify-center
@@ -134,10 +134,10 @@ const SongItem = ({ image, name, singer, id, premium }) => {
           </div>
         </div>
 
-        {/* TOP RIGHT ACTIONS */}
+        
         <div className="absolute top-2 right-2 flex flex-col gap-2">
 
-          {/* PREMIUM */}
+          
           {premium && (
             <div className="
               bg-yellow-500
@@ -153,7 +153,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
             </div>
           )}
 
-          {/* LIKE */}
+          
           <button
             onClick={handleLike}
             className="
@@ -170,7 +170,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
           </button>
         </div>
 
-        {/* BOOKMARK */}
+        
         <button
           className="
             absolute bottom-2 left-2
@@ -192,7 +192,7 @@ const SongItem = ({ image, name, singer, id, premium }) => {
         </button>
       </div>
 
-      {/* TEXT */}
+      
       <div className="mt-3">
         <p
           className="

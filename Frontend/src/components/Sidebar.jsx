@@ -16,15 +16,15 @@ const Sidebar = ({ mobile = false, closeSidebar }) => {
 
   const handleMenuClick = () => {
     if (mobile) {
-      closeSidebar?.(); // mobile me sidebar band
+      closeSidebar?.(); 
     } else {
-      setCollapsed(!collapsed); // desktop me collapse
+      setCollapsed(!collapsed); 
     }
   };
 
   const handleNavigate = (path) => {
     navigate(path);
-    if (mobile) closeSidebar?.(); // mobile me click ke baad sidebar band
+    if (mobile) closeSidebar?.(); 
   };
 
   return (
@@ -32,7 +32,7 @@ const Sidebar = ({ mobile = false, closeSidebar }) => {
       className={`h-full flex flex-col gap-2 text-white p-2 transition-all duration-300 bg-[#121212]
       ${mobile ? "w-[280px]" : collapsed ? "w-[80px]" : "w-[25vw] min-w-[240px]"}`}
     >
-      {/* Top */}
+     
       <div className="flex items-center justify-between mb-2">
         {!collapsed && <p className="text-lg font-bold px-2">Menu</p>}
 
@@ -44,7 +44,7 @@ const Sidebar = ({ mobile = false, closeSidebar }) => {
         </button>
       </div>
 
-      {/* Home */}
+      
       <div className="bg-[#121212]/80 backdrop-blur-xl rounded-2xl p-2">
         <div
           onClick={() => handleNavigate("/")}
@@ -57,7 +57,7 @@ const Sidebar = ({ mobile = false, closeSidebar }) => {
         </div>
       </div>
 
-      {/* Library */}
+      
       <div className="flex-1 bg-[#121212]/80 backdrop-blur-xl rounded-2xl flex flex-col overflow-hidden">
         <div className="flex items-center justify-between p-3 border-b border-white/10">
           <div className="flex items-center gap-3">
