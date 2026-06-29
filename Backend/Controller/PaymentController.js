@@ -56,7 +56,6 @@ exports.createSubscription = TryCatch(async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       payment_method_types: ["card"],
-      customer_email: user.email,
       line_items: [
         {
           price: process.env.STRIPE_PRICE_ID,
