@@ -3,7 +3,7 @@ const Song = require("../models/Song");
 const TryCatch = require("../utlis/TryCatch");
 const getDatauri = require("../utlis/urlGenerater");
 const cloudinary = require("cloudinary");
-
+const axios = require("axios")
 exports.createAlbum = TryCatch(async (req, res) => {
   if (req.user.role !== "admin") {
     return res.status(403).json({
@@ -113,10 +113,22 @@ exports.addSong = TryCatch(async (req, res) => {
 exports.getNewSongs = async (req, res) => {
   try {
     const songs = await Song.find()
-      .sort({ createdAt: -1 }) 
-      .limit(10); 
+      .sort({ createdAt: -1 })
+      .limit(10);
 
-    res.json(songs);
+    const result = songs.map((song) => ({
+      _id: song._id,
+      title: song.title,
+      description: song.description,
+      singer: song.singer,
+      premium: song.premium,
+      category: song.category,
+      album: song.album,
+      thumbnail: song.thumbnail,
+      createdAt: song.createdAt,
+    }));
+
+    res.json(result);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -159,8 +171,21 @@ exports.addThumbnail = TryCatch(async (req, res) => {
 
 
 exports.getAllSongs = TryCatch(async (req, res) => {
-const songs = await Song.find();
-res.json(songs);
+  const songs = await Song.find();
+
+  const result = songs.map((song) => ({
+    _id: song._id,
+    title: song.title,
+    description: song.description,
+    singer: song.singer,
+    premium: song.premium,
+    category: song.category,
+    album: song.album,
+    thumbnail: song.thumbnail,
+    createdAt: song.createdAt,
+  }));
+
+  res.json(result);
 });
 
 exports.getAllSongsByAlbum = TryCatch(async (req, res) => {
@@ -169,7 +194,22 @@ const album = await Album.findById(req.params.id);
 
 const songs = await Song.find({ album: req.params.id });
 
-res.json({ album, songs });
+const result = songs.map((song) => ({
+  _id: song._id,
+  title: song.title,
+  description: song.description,
+  singer: song.singer,
+  premium: song.premium,
+  category: song.category,
+  album: song.album,
+  thumbnail: song.thumbnail,
+  createdAt: song.createdAt,
+}));
+
+res.json({
+  album,
+  songs: result,
+});
 
 });
 
@@ -223,6 +263,42 @@ exports.getSingleSong = TryCatch(async (req, res) => {
     });
   }
 
-  res.json(song);
+  res.json({
+    _id: song._id,
+    title: song.title,
+    description: song.description,
+    singer: song.singer,
+    premium: song.premium,
+    category: song.category,
+    album: song.album,
+    thumbnail: song.thumbnail,
+    createdAt: song.createdAt,
+  });
+});
+
+exports.streamSong = TryCatch(async (req, res) => {
+
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+        return res.status(404).json({
+            message: "Song not found",
+        });
+    }
+
+    if (song.premium && !req.user.premium) {
+        return res.status(403).json({
+            message: "Premium Required",
+        });
+    }
+
+    const response = await axios.get(song.audio.url, {
+        responseType: "stream",
+    });
+
+    res.setHeader("Content-Type", "audio/mpeg");
+
+    response.data.pipe(res);
+
 });
 

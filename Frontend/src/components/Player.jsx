@@ -11,6 +11,8 @@ import { TbRepeat } from "react-icons/tb";
 
 import { SongData } from "../Context/song";
 
+const API_URL = import.meta.env.VITE_SERVER || "http://localhost:5000"
+
 const Player = () => {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -37,7 +39,7 @@ const Player = () => {
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !song?.audio?.url) return;
+    if (!audio || !song?._id) return;
 
     const handleLoaded = () => {
       setDuration(audio.duration || 0);
@@ -72,25 +74,27 @@ const Player = () => {
       audio.removeEventListener("timeupdate", handleTime);
       audio.removeEventListener("ended", handleEnd);
     };
-  }, [audioRef, song?._id, song?.audio?.url, repeat, nextSong, progressKey]);
+  }, [audioRef, song?._id, repeat, nextSong, progressKey]);
 
 
 useEffect(() => {
-
   const audio = audioRef.current;
-  if (!audio || !song?.audio?.url) return;
 
-  if (audio.src !== song.audio.url) {
-    audio.src = song.audio.url;
+  if (!audio || !song?._id) return;
+
+  const streamUrl = `${API_URL}/api/songs/play/${song._id}`;
+
+  if (audio.src !== streamUrl) {
+    audio.src = streamUrl;
+    audio.load();
   }
 
-  if (isPlaying && audio.paused) {
-    audio.play().catch(() => {});
-  }
-
-  if (!isPlaying && !audio.paused) {
+  if (isPlaying) {
+    audio.play().catch(console.error);
+  } else {
     audio.pause();
   }
+
 }, [song?._id, isPlaying]);
 
 
@@ -148,7 +152,7 @@ useEffect(() => {
     return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  if (!song || !song.audio?.url) return null;
+  if (!song) return null;
 
   return (
     <>

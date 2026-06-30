@@ -13,6 +13,7 @@ const {
   getSingleSong,
   deleteAlbum,
   getNewSongs,
+  streamSong
 } = require("../Controller/SongController.js");
 
 const router = express.Router();
@@ -22,7 +23,7 @@ router.get("/album/all", getAllAlbums);
 router.get("/latest", getNewSongs);
 router.get("/single/:id", getSingleSong);
 router.get("/album/:id", getAllSongsByAlbum);
-
+router.get("/play/:id" ,isAuth, streamSong);
 
 router.post("/new", uploadFile, isAuth, addSong);
 router.post("/thumbnail/:id", isAuth, uploadFile, addThumbnail);
