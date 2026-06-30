@@ -88,14 +88,21 @@ useEffect(() => {
     audio.src = streamUrl;
     audio.load();
   }
+}, [song?._id]);
+useEffect(() => {
+  const audio = audioRef.current;
+
+  if (!audio) return;
 
   if (isPlaying) {
-    audio.play().catch(console.error);
+    audio.play().catch((err) => {
+      console.log(err);
+      setIsPlaying(false);
+    });
   } else {
     audio.pause();
   }
-
-}, [song?._id, isPlaying]);
+}, [isPlaying]);
 
 
   useEffect(() => {

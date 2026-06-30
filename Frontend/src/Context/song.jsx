@@ -17,9 +17,7 @@ export const SongProvider = ({ children }) => {
 
   const [song, setSong] = useState(null);
 
-  const [isPlaying, setIsPlaying] = useState(() => {
-    return localStorage.getItem("isPlaying") === "true";
-  });
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const [index, setIndex] = useState(0);
   const [shuffle, setShuffle] = useState(false);
