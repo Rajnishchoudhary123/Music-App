@@ -277,28 +277,70 @@ exports.getSingleSong = TryCatch(async (req, res) => {
 });
 
 exports.streamSong = TryCatch(async (req, res) => {
+  const song = await Song.findById(req.params.id);
 
-    const song = await Song.findById(req.params.id);
+  if (!song) {
+    return res.status(404).json({
+      message: "Song not found",
+    });
+  }
 
-    if (!song) {
-        return res.status(404).json({
-            message: "Song not found",
-        });
-    }
+  if (song.premium && !req.user.isPremium) {
+    return res.status(403).json({
+      message: "Premium Required",
+    });
+  }
 
-    if (song.premium && !req.user.premium) {
-        return res.status(403).json({
-            message: "Premium Required",
-        });
-    }
+  const range = req.headers.range || "bytes=0-";
 
-    const response = await axios.get(song.audio.url, {
-        responseType: "stream",
+  try {
+    const response = await axios({
+      method: "GET",
+      url: song.audio.url,
+      responseType: "stream",
+      headers: {
+        Range: range,
+      },
+      validateStatus: () => true,
     });
 
-    res.setHeader("Content-Type", "audio/mpeg");
+
+    if (response.headers["content-type"]) {
+      res.setHeader("Content-Type", response.headers["content-type"]);
+    }
+
+    if (response.headers["content-length"]) {
+      res.setHeader("Content-Length", response.headers["content-length"]);
+    }
+
+    if (response.headers["content-range"]) {
+      res.setHeader("Content-Range", response.headers["content-range"]);
+    }
+
+    if (response.headers["accept-ranges"]) {
+      res.setHeader("Accept-Ranges", response.headers["accept-ranges"]);
+    } else {
+      res.setHeader("Accept-Ranges", "bytes");
+    }
+
+    if (response.headers["etag"]) {
+      res.setHeader("ETag", response.headers["etag"]);
+    }
+
+    if (response.headers["last-modified"]) {
+      res.setHeader("Last-Modified", response.headers["last-modified"]);
+    }
+
+    res.status(response.status);
 
     response.data.pipe(res);
 
+  } catch (err) {
+    console.log("Streaming Error:", err.message);
+
+    return res.status(500).json({
+      message: "Streaming failed",
+    });
+  }
 });
 
