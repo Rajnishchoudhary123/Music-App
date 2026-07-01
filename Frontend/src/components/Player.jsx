@@ -295,7 +295,6 @@ useEffect(() => {
                 }`}
               />
             </div>
-+------------------
             <div
               className="flex items-center gap-3 text-xs text-gray-400 w-full mt-2"
               onClick={(e) => e.stopPropagation()}
