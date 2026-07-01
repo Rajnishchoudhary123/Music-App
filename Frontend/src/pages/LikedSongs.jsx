@@ -30,7 +30,6 @@ const LikedSongs = () => {
     <Layout>
       <div className="min-h-screen relative p-6 text-white bg-black overflow-hidden">
 
-        {/* BACKGROUND GLOW */}
         <div className="absolute inset-0">
           <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-pink-500/20 blur-[120px] rounded-full" />
           <div className="absolute bottom-[-100px] right-[-100px] w-[400px] h-[400px] bg-red-500/20 blur-[120px] rounded-full" />
@@ -38,7 +37,6 @@ const LikedSongs = () => {
 
         <div className="relative z-10">
 
-          {/* HEADER CARD */}
           <div className="mb-10 p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl">
             <h1 className="text-3xl md:text-4xl font-bold flex items-center gap-2">
               ❤️ Liked Songs
@@ -48,14 +46,12 @@ const LikedSongs = () => {
             </p>
           </div>
 
-          {/* LOADING */}
           {loading && (
             <div className="p-6 text-gray-400 animate-pulse">
               Loading your liked songs...
             </div>
           )}
 
-          {/* EMPTY STATE */}
           {!loading && songs.length === 0 && (
             <div className="flex flex-col items-center justify-center mt-20">
               <div className="p-10 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 text-center">
@@ -70,12 +66,11 @@ const LikedSongs = () => {
             </div>
           )}
 
-          {/* SONG GRID (NEW SPOTIFY STYLE GRID) */}
-         {/* SONG LIST */}
+         
 {!loading && songs.length > 0 && (
   <div className="bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
 
-    {/* Desktop Header */}
+  
     <div className="hidden md:grid grid-cols-[60px_1fr_1fr_80px] px-5 py-3 border-b border-white/10 text-gray-400 text-sm">
       <p>#</p>
       <p>Title</p>
@@ -105,12 +100,10 @@ const LikedSongs = () => {
           cursor-pointer
         "
       >
-        {/* Index */}
         <div className="hidden md:block text-gray-400">
           {i + 1}
         </div>
 
-        {/* Song */}
         <div className="flex items-center gap-3 flex-1 min-w-0">
 
           <img
@@ -133,12 +126,10 @@ const LikedSongs = () => {
 
         </div>
 
-        {/* Desktop Singer */}
         <p className="hidden md:block text-gray-300 truncate">
           {song.singer}
         </p>
 
-        {/* Play Button */}
         <div className="flex justify-end">
        
           <button
